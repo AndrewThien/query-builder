@@ -1,20 +1,14 @@
-import { NextApiRequest } from "next";
-import { parse } from "csv-parse/sync";
+import { NextRequest } from "next/server";
 import { db } from "@/lib/db";
 import { tableMetadata } from "@/lib/db/schema";
 import { TableMetaData } from "@/types/table";
 import { NextResponse } from "next/server";
 
-export const POST = async (req: NextApiRequest) => {
+export async function POST(req: NextRequest) {
   try {
-    const file = req.body;
-    console.log("🚀 ~ POST ~ file:", typeof file);
-    const fileContent =
-      typeof file === "string" ? file : file.toString("utf-8");
-    const records = parse(fileContent, { columns: true });
+    const data = await req.json();
 
-    console.log("🚀 ~ POST ~ records:", records);
-    const metadataEntries = records.map((record: TableMetaData) => ({
+    const metadataEntries = data.map((record: TableMetaData) => ({
       section: record.section,
       columnName: record.column_name,
       dataType: record.data_type,
@@ -32,4 +26,4 @@ export const POST = async (req: NextApiRequest) => {
       { status: 500 }
     );
   }
-};
+}

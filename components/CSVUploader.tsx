@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { TableMetaData } from "@/types/table";
 
 export default function CSVUploader() {
   const [file, setFile] = useState<File | null>(null);
@@ -10,6 +11,25 @@ export default function CSVUploader() {
     if (e.target.files) {
       setFile(e.target.files[0]);
     }
+  };
+
+  const parseCSV = (text: string): TableMetaData[] => {
+    const lines = text.split("\n");
+    const headers = lines[0].split(",").map((header) => header.trim());
+
+    return lines
+      .slice(1)
+      .filter((line) => line.trim() !== "")
+      .map((line) => {
+        const values = line.split(",").map((value) => value.trim());
+        return {
+          section: values[0],
+          column_name: values[1],
+          data_type: values[2],
+          column_description: values[3],
+          sensitive: values[4].toLowerCase() === "true",
+        };
+      });
   };
 
   const handleUpload = async () => {
@@ -21,19 +41,27 @@ export default function CSVUploader() {
     const reader = new FileReader();
     reader.onload = async (e) => {
       const text = e.target?.result;
-      console.log("🚀 ~ reader.onload= ~ text:", text);
+      if (typeof text !== "string") return;
+
+      const parsedData = parseCSV(text);
 
       try {
         const response = await fetch("/api/upload", {
           method: "POST",
-          body: file,
           headers: {
-            "Content-Type": "text/csv",
+            "Content-Type": "application/json",
           },
+          body: JSON.stringify(parsedData),
         });
 
         if (response.ok) {
           alert("File uploaded successfully");
+          setFile(null);
+          if (document.querySelector('input[type="file"]')) {
+            (
+              document.querySelector('input[type="file"]') as HTMLInputElement
+            ).value = "";
+          }
         } else {
           alert("Upload failed");
         }

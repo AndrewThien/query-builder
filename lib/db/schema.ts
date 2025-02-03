@@ -7,7 +7,7 @@ import {
 } from "drizzle-orm/pg-core";
 
 export const tableMetadata = pgTable("table_metadata", {
-  id: integer("id").primaryKey(),
+  id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
   modifiedBy: text("modified_by"),
