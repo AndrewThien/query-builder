@@ -16,6 +16,37 @@ const initialValues = {
   ],
 };
 
+interface Condition {
+  column_name: string;
+  operator: string;
+  value: string;
+}
+
+interface FormValues {
+  table: string;
+  conditions: Condition[];
+}
+
+const generateSQLQuery = (values: FormValues): string => {
+  const { table, conditions } = values;
+  if (!table) return "";
+
+  let query = `SELECT * FROM ${table}`;
+  if (conditions.length > 0) {
+    const conditionStrings = conditions.map(
+      ({ column_name, operator, value }) => {
+        if (operator.toLowerCase() === "between") {
+          const [val1, val2] = value.split(",");
+          return `${column_name} BETWEEN '${val1.trim()}' AND '${val2.trim()}'`;
+        }
+        return `${column_name} ${operator} '${value}'`;
+      }
+    );
+    query += ` WHERE ${conditionStrings.join(" AND ")}`;
+  }
+  return query;
+};
+
 export const InviteFriends = () => (
   <div>
     <h1 className="mb-5 font-bold text-lg">Query builder</h1>
@@ -23,12 +54,13 @@ export const InviteFriends = () => (
       initialValues={initialValues}
       onSubmit={async (values) => {
         await new Promise((r) => setTimeout(r, 500));
-        alert(JSON.stringify(values, null, 2));
+        const sqlQuery = generateSQLQuery(values);
+        alert(sqlQuery);
       }}
     >
       {({ values }) => (
         <Form>
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 items-center mb-1">
             <label htmlFor={`table`}>Table</label>
             <FormikInput name={`table`} placeholder="Column name" />
           </div>
@@ -37,8 +69,11 @@ export const InviteFriends = () => (
               <div className="flex flex-col gap-3">
                 {values.conditions.length > 0 &&
                   values.conditions.map((friend, index) => (
-                    <div className="flex gap-3" key={index}>
-                      <div>
+                    <div
+                      className="flex gap-3 border rounded-xl p-3"
+                      key={index}
+                    >
+                      <div className="flex flex-col gap-1">
                         <div className="flex gap-2 items-center">
                           <label htmlFor={`conditions.${index}.column_name`}>
                             Column
@@ -53,7 +88,6 @@ export const InviteFriends = () => (
                             className="field-error"
                           />
                         </div>
-                        {/* TODO: add validation for OPERATOR: only one for one condition */}
                         <div className="flex gap-2 items-center">
                           <label htmlFor={`conditions.${index}.operator`}>
                             Operator
@@ -68,7 +102,6 @@ export const InviteFriends = () => (
                             className="field-error"
                           />
                         </div>
-                        {/* TODO: add validation for BETWEEN */}
                         <div className="flex gap-2 items-center">
                           <label htmlFor={`conditions.${index}.value`}>
                             Value
