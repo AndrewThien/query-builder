@@ -66,11 +66,12 @@ export const InviteFriends = () => (
           </div>
           <FieldArray name="conditions">
             {({ remove, push }) => (
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col">
+                <h1>Filters:</h1>
                 {values.conditions.length > 0 &&
                   values.conditions.map((friend, index) => (
                     <div
-                      className="flex gap-3 border rounded-xl p-3"
+                      className="flex gap-3 border rounded-xl p-3 mb-2"
                       key={index}
                     >
                       <div className="flex flex-col gap-1">
