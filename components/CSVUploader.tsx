@@ -3,9 +3,13 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { TableMetaData } from "@/types/table";
+import { useGlobalState } from "@/lib/GlobalStateContext";
+import { useRouter } from "next/navigation";
 
 export default function CSVUploader() {
   const [file, setFile] = useState<File | null>(null);
+  const { setCsvData } = useGlobalState();
+  const router = useRouter();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -44,31 +48,18 @@ export default function CSVUploader() {
       if (typeof text !== "string") return;
 
       const parsedData = parseCSV(text);
+      setCsvData(parsedData);
 
-      try {
-        const response = await fetch("/api/upload", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(parsedData),
-        });
-
-        if (response.ok) {
-          alert("File uploaded successfully");
-          setFile(null);
-          if (document.querySelector('input[type="file"]')) {
-            (
-              document.querySelector('input[type="file"]') as HTMLInputElement
-            ).value = "";
-          }
-        } else {
-          alert("Upload failed");
-        }
-      } catch (error) {
-        console.error("Upload error:", error);
-        alert("Upload failed");
+      alert("File processed successfully");
+      setFile(null);
+      if (document.querySelector('input[type="file"]')) {
+        (
+          document.querySelector('input[type="file"]') as HTMLInputElement
+        ).value = "";
       }
+
+      // Navigate to the main page to view the data
+      router.push("/");
     };
 
     reader.readAsText(file);
