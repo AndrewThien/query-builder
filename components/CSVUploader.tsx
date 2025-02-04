@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { TableMetaData } from "@/types/table";
 import { useGlobalState } from "@/lib/GlobalStateContext";
 import { useRouter } from "next/navigation";
+import { cleanColumnDescription } from "@/lib/utils";
 
 export default function CSVUploader() {
   const [file, setFile] = useState<File | null>(null);
@@ -16,24 +17,18 @@ export default function CSVUploader() {
       setFile(e.target.files[0]);
     }
   };
-
+  // TODO: clean the csv file before passing to the fornt page
   const parseCSV = (text: string): TableMetaData[] => {
-    const lines = text.split("\n");
-    const headers = lines[0].split(",").map((header) => header.trim());
-
-    return lines
-      .slice(1)
-      .filter((line) => line.trim() !== "")
-      .map((line) => {
-        const values = line.split(",").map((value) => value.trim());
-        return {
-          section: values[0],
-          column_name: values[1],
-          data_type: values[2],
-          column_description: values[3],
-          sensitive: values[4].toLowerCase() === "true",
-        };
-      });
+    const rows = text?.split("\n").map((row) => row.split(","));
+    const cleanedRows = cleanColumnDescription(rows);
+    // Skip header row and map remaining rows to TableMetaData structure
+    return cleanedRows.slice(1).map((row) => ({
+      section: row[0] || "",
+      column_name: row[1] || "",
+      data_type: row[2] || "",
+      column_description: row[3] || "",
+      sensitive: row[4] === "true",
+    }));
   };
 
   const handleUpload = async () => {
@@ -52,12 +47,6 @@ export default function CSVUploader() {
 
       alert("File processed successfully");
       setFile(null);
-      if (document.querySelector('input[type="file"]')) {
-        (
-          document.querySelector('input[type="file"]') as HTMLInputElement
-        ).value = "";
-      }
-
       // Navigate to the main page to view the data
       router.push("/");
     };
