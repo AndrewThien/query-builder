@@ -1,36 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-
-const cleanColumnDescription = (rows: string[][]): string[][] => {
-  return rows.map((row) => {
-    // Create a copy of the row to avoid mutating original
-    const cleanedRow = [...row];
-
-    // If the column description (4th column) spans multiple cells
-    if (cleanedRow.length > 4) {
-      // Combine additional cells into the description
-      const description = cleanedRow
-        .slice(3, cleanedRow.length - 1)
-        .join(" ")
-        .trim();
-
-      // Keep only the first 4 original columns, with combined description
-      return [
-        cleanedRow[0],
-        cleanedRow[1],
-        cleanedRow[2],
-        description,
-        cleanedRow[cleanedRow.length - 1],
-      ];
-    }
-
-    return cleanedRow;
-  });
-};
+import { parse } from "csv-parse";
+import { TableMetaData } from "../types/table";
+import { DataTable } from "./data-table";
+import { columns } from "./columns";
 
 const Page: React.FC = () => {
-  const [csvData, setCsvData] = useState<string[][]>([]);
+  const [csvData, setCsvData] = useState<TableMetaData[]>([]);
+
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -53,16 +31,44 @@ const Page: React.FC = () => {
 
     reader.onload = (e) => {
       const text = e.target?.result as string;
-      const rows = text?.split("\n").map((row) => row.split(","));
+      const records: TableMetaData[] = [];
+
+      // Initialize the parser
+      const parser = parse({
+        delimiter: ",",
+        columns: true,
+        trim: true,
+        skip_empty_lines: true,
+        relax_quotes: true,
+      });
+      // Use the readable stream api to consume records
+      parser.on("readable", function () {
+        let record;
+        while ((record = parser.read()) !== null) {
+          records.push(record);
+        }
+      });
+      // Catch any error
+      parser.on("error", function (err) {
+        console.error(err.message);
+      });
+      // Test that the parsed records matched the expected records
+      parser.on("end", function () {
+        setCsvData(records);
+        setErrorMessage("");
+        setIsLoading(false);
+      });
+      // Write data to the stream
+      parser.write(text);
+      // Close the readable stream
+      parser.end();
 
       // Clean the rows
-      const cleanedRows = cleanColumnDescription(rows);
+      // const cleanedRows = cleanColumnDescription(rows);
 
-      setCsvData(cleanedRows);
-      setErrorMessage("");
-      setIsLoading(false);
+      console.log("🚀 ~ handleFileUpload ~ records:", records);
     };
-
+    console.log("🚀 ~ csvData:", csvData);
     reader.readAsText(file);
   };
 
@@ -85,28 +91,9 @@ const Page: React.FC = () => {
         <div style={{ textAlign: "center", marginTop: "20px" }}>Loading...</div>
       ) : (
         csvData.length > 0 && (
-          <table
-            style={{
-              borderCollapse: "collapse",
-              width: "100%",
-              marginTop: "20px",
-            }}
-          >
-            <tbody>
-              {csvData.map((row, index) => (
-                <tr key={index}>
-                  {row.map((cell, cellIndex) => (
-                    <td
-                      key={cellIndex}
-                      style={{ border: "1px solid #ccc", padding: "8px" }}
-                    >
-                      {cell}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="container mx-auto py-10">
+            <DataTable columns={columns} data={csvData} />
+          </div>
         )
       )}
     </div>
