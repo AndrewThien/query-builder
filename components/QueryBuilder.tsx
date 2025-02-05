@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Formik, Field, Form, ErrorMessage, FieldArray } from "formik";
 import { Button } from "./ui/button";
-import { Activity } from "lucide-react";
+import { saveAs } from "file-saver";
 import { FormikInput } from "./FormikInput";
 
 const initialValues = {
@@ -55,14 +55,16 @@ export const InviteFriends = () => (
       onSubmit={async (values) => {
         await new Promise((r) => setTimeout(r, 500));
         const sqlQuery = generateSQLQuery(values);
-        alert(sqlQuery);
+        const blob = new Blob([sqlQuery]);
+        // alert(sqlQuery);
+        saveAs(blob, "sql_query.sql");
       }}
     >
       {({ values }) => (
         <Form>
           <div className="flex gap-2 items-center mb-1">
-            <label htmlFor={`table`}>Table</label>
-            <FormikInput name={`table`} placeholder="Column name" />
+            <label htmlFor={`table`}>Table:</label>
+            <FormikInput name={`table`} placeholder="Table name" />
           </div>
           <FieldArray name="conditions">
             {({ remove, push }) => (
