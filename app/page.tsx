@@ -10,6 +10,7 @@ import { InviteFriends } from "@/components/QueryBuilder";
 import { Blocks } from "lucide-react";
 import { COSD_table, SACT_table } from "@/lib/data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tooltips } from "@/components/Tooltips";
 
 const Page: React.FC = () => {
   const { csvData } = useGlobalState();
@@ -26,27 +27,37 @@ const Page: React.FC = () => {
       </div>
 
       <div className="flex gap-10 justify-center">
-        <Tabs defaultValue={"SACT"}>
-          <TabsList className="mb-2">
-            <a className="h-full">
-              <TabsTrigger value={SACT_table.table}>
-                {SACT_table.table}
-              </TabsTrigger>
-            </a>
-            <a className="h-full">
-              <TabsTrigger value={COSD_table.table}>
-                {COSD_table.table}
-              </TabsTrigger>
-            </a>
-          </TabsList>
-          <TabsContent value={SACT_table.table}>
-            <DataTable columns={columns} data={SACT_table.columns} />
-          </TabsContent>
-          <TabsContent value={COSD_table.table}>
-            <DataTable columns={columns} data={COSD_table.columns} />
-          </TabsContent>
-        </Tabs>
-        <InviteFriends />
+        <div>
+          <Tabs defaultValue={"SACT"}>
+            <div className="flex items-center gap-2">
+              <h1 className="text-lg flex">
+                Available Table{" "}
+                <Tooltips content="Tables that available inside Research View" />
+              </h1>
+              <TabsList className="">
+                <a className="h-full">
+                  <TabsTrigger value={SACT_table.table}>
+                    {SACT_table.table}
+                  </TabsTrigger>
+                </a>
+                <a className="h-full">
+                  <TabsTrigger value={COSD_table.table}>
+                    {COSD_table.table}
+                  </TabsTrigger>
+                </a>
+              </TabsList>
+            </div>
+            <TabsContent value={SACT_table.table}>
+              <DataTable columns={columns} data={SACT_table.columns} />
+            </TabsContent>
+            <TabsContent value={COSD_table.table}>
+              <DataTable columns={columns} data={COSD_table.columns} />
+            </TabsContent>
+          </Tabs>
+        </div>
+        <div>
+          <InviteFriends />
+        </div>
       </div>
     </div>
   );
