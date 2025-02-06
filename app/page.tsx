@@ -27,6 +27,12 @@ const Page: React.FC = () => {
     ]);
   };
 
+  const handleRemoveCondition = (index: number) => {
+    setConditions((prevConditions) =>
+      prevConditions.filter((_, i) => i !== index)
+    );
+  };
+
   return (
     <div className="container mx-24 my-5">
       <div className="flex justify-between items-center mb-6">
@@ -65,7 +71,11 @@ const Page: React.FC = () => {
                 data={SACT_table.columns}
               />
               {/* TODO: add filter column name to search */}
-              <GenerateQuery table={SACT_table.table} conditions={conditions} />
+              <GenerateQuery
+                table={SACT_table.table}
+                conditions={conditions}
+                onRemoveCondition={handleRemoveCondition}
+              />
             </div>
           </TabsContent>
           <TabsContent value={COSD_table.table}>
@@ -74,7 +84,11 @@ const Page: React.FC = () => {
                 columns={columns(handleAddCondition)}
                 data={COSD_table.columns}
               />
-              <GenerateQuery table={COSD_table.table} conditions={conditions} />
+              <GenerateQuery
+                table={COSD_table.table}
+                conditions={conditions}
+                onRemoveCondition={handleRemoveCondition}
+              />
             </div>
           </TabsContent>
         </Tabs>

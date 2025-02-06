@@ -1,3 +1,4 @@
+import { Condition } from "@/components/QueryBuilder";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -30,4 +31,25 @@ export const cleanColumnDescription = (rows: string[][]): string[][] => {
 
     return cleanedRow;
   });
+};
+
+export const generateSQLQuery = (
+  conditions: Condition[],
+  table: string
+): string => {
+  if (!table) return "";
+  let query = `SELECT * FROM ${table}`;
+  if (conditions.length > 0) {
+    const conditionStrings = conditions.map(
+      ({ column_name, operator, value }) => {
+        if (operator.toLowerCase() === "between") {
+          const [val1, val2] = value.split(",");
+          return `${column_name} BETWEEN '${val1.trim()}' AND '${val2.trim()}'`;
+        }
+        return `${column_name} ${operator} '${value}'`;
+      }
+    );
+    query += ` WHERE ${conditionStrings.join(" AND ")}`;
+  }
+  return query;
 };
