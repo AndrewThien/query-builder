@@ -12,6 +12,7 @@ import { Formik, Form, ErrorMessage } from "formik";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
+import { Mandatory } from "@/components/Mandatory";
 
 export const columns = (
   addFilter: (
@@ -52,7 +53,9 @@ export const columns = (
                     <div className="flex flex-col gap-2 mt-1">
                       <div className="flex flex-col gap-2">
                         <div className="flex gap-2 items-center">
-                          <label className="font-semibold">Operator</label>
+                          <label className="font-semibold flex">
+                            Operator <Mandatory />
+                          </label>
                           <Input
                             name={`operator`}
                             onChange={handleChange}
@@ -66,7 +69,9 @@ export const columns = (
                           />
                         </div>
                         <div className="flex gap-2 items-center">
-                          <label className="font-semibold">Value</label>
+                          <label className="font-semibold flex">
+                            Value <Mandatory />
+                          </label>
                           <Input
                             name={`value`}
                             onChange={handleChange}

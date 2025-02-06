@@ -4,6 +4,8 @@ import { Button } from "./ui/button";
 import { saveAs } from "file-saver";
 import { generateSQLQuery } from "@/lib/utils";
 import { Input } from "./ui/input";
+import { Mandatory } from "./Mandatory";
+import { Settings } from "lucide-react";
 
 export interface Condition {
   column_name: string;
@@ -44,7 +46,9 @@ export default function GenerateQuery({
         {({ values, handleChange }) => (
           <Form>
             <div className="flex gap-2 items-center mb-1">
-              <label className="font-bold">Requestor:</label>
+              <label className="font-bold flex">
+                Requestor <Mandatory />
+              </label>
               <Input
                 name="requestor"
                 placeholder="Your Name"
@@ -53,7 +57,9 @@ export default function GenerateQuery({
               />
             </div>
             <div className="flex gap-2 items-center mb-1">
-              <label className="font-bold">Organisation:</label>
+              <label className="font-bold flex">
+                Organisation <Mandatory />
+              </label>
               <Input
                 name="org"
                 placeholder="Your Organisation"
@@ -68,7 +74,7 @@ export default function GenerateQuery({
             <FieldArray name="conditions">
               {() => (
                 <div className="flex flex-col">
-                  <h1 className="font-bold mb-2">Conditions:</h1>
+                  <h1 className="font-bold mb-1">Conditions:</h1>
                   {conditions.length > 0 &&
                     conditions.map((condition, index) => (
                       <div
@@ -131,8 +137,8 @@ export default function GenerateQuery({
               )}
             </FieldArray>
             <div className="flex justify-center">
-              <Button className="mt-3" type="submit">
-                Generate query
+              <Button className="mt-3 text-lg items-center" type="submit">
+                Generate SQL query <Settings />
               </Button>
             </div>
           </Form>
