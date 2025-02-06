@@ -3,6 +3,7 @@ import { Formik, Form, ErrorMessage, FieldArray } from "formik";
 import { Button } from "./ui/button";
 import { saveAs } from "file-saver";
 import { generateSQLQuery } from "@/lib/utils";
+import { Input } from "./ui/input";
 
 export interface Condition {
   column_name: string;
@@ -28,23 +29,46 @@ export default function GenerateQuery({
         Proposed Query
       </h1>
       <Formik
-        initialValues={{ conditions }}
+        initialValues={{ conditions, requestor: "", org: "" }}
         onSubmit={async (values) => {
           const sqlQuery = generateSQLQuery(values.conditions, table);
           const blob = new Blob([sqlQuery]);
-          saveAs(blob, "sql_query.sql");
+          saveAs(
+            blob,
+            `${values.requestor}-${
+              values.org
+            }-${table}-${new Date().toLocaleTimeString()}_${new Date().toLocaleDateString()}.sql`
+          );
         }}
       >
-        {({ values }) => (
+        {({ values, handleChange }) => (
           <Form>
             <div className="flex gap-2 items-center mb-1">
-              <label htmlFor={`table`}>Table:</label>
+              <label className="font-bold">Requestor:</label>
+              <Input
+                name="requestor"
+                placeholder="Your Name"
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="flex gap-2 items-center mb-1">
+              <label className="font-bold">Organisation:</label>
+              <Input
+                name="org"
+                placeholder="Your Organisation"
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="flex gap-2 items-center mb-1">
+              <label className="font-bold">Table:</label>
               {table}
             </div>
             <FieldArray name="conditions">
               {() => (
                 <div className="flex flex-col">
-                  <h1>Conditions:</h1>
+                  <h1 className="font-bold">Conditions:</h1>
                   {conditions.length > 0 &&
                     conditions.map((condition, index) => (
                       <div
@@ -54,48 +78,38 @@ export default function GenerateQuery({
                         <div className="flex flex-col gap-1 w-full">
                           <div className="flex gap-3  justify-center">
                             <div className="flex flex-col gap-2 items-center">
-                              <label
-                                htmlFor={`conditions.${index}.column_name`}
-                              >
-                                Column
-                              </label>
+                              <label className="font-bold">Column</label>
                               {condition.column_name}
                               <ErrorMessage
-                                name={`conditions.${index}.column_name`}
+                                name={`column_name`}
                                 component="div"
                                 className="field-error"
                               />
                             </div>
                             <div className="flex flex-col gap-2 items-center">
-                              <label htmlFor={`conditions.${index}.operator`}>
-                                Operator
-                              </label>
+                              <label className="font-bold">Operator</label>
                               {condition.operator}
                               <ErrorMessage
-                                name={`conditions.${index}.operator`}
+                                name={`operator`}
                                 component="div"
                                 className="field-error"
                               />
                             </div>
                             <div className="flex flex-col gap-2 items-center">
-                              <label htmlFor={`conditions.${index}.value`}>
-                                Value
-                              </label>
+                              <label className="font-bold">Value</label>
                               {condition.value}
                               <ErrorMessage
-                                name={`conditions.${index}.value`}
+                                name={`value`}
                                 component="div"
                                 className="field-error"
                               />
                             </div>
                           </div>
-                          <div className="flex gap-2 justify-center">
-                            <label htmlFor={`conditions.${index}.value`}>
-                              Reason:
-                            </label>
+                          <div className="flex gap-2 justify-start">
+                            <label className="font-bold">Reason:</label>
                             {condition.reason}
                             <ErrorMessage
-                              name={`conditions.${index}.value`}
+                              name={`reason`}
                               component="div"
                               className="field-error"
                             />
