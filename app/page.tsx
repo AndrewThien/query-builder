@@ -61,12 +61,18 @@ const Page: React.FC = () => {
             <TabsList className="">
               <a className="h-full">
                 <TabsTrigger value={SACT_table.table}>
-                  {SACT_table.table}
+                  {SACT_table.table} ({SACT_table.columns.length}){" "}
+                  <Tooltips
+                    content={`This table has ${SACT_table.columns.length} columns`}
+                  />
                 </TabsTrigger>
               </a>
               <a className="h-full">
                 <TabsTrigger value={COSD_table.table}>
-                  {COSD_table.table}
+                  {COSD_table.table} ({COSD_table.columns.length}){" "}
+                  <Tooltips
+                    content={`This table has ${COSD_table.columns.length} columns`}
+                  />
                 </TabsTrigger>
               </a>
             </TabsList>
