@@ -1,23 +1,17 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React, { useState } from "react";
 import { Formik, Form, ErrorMessage, FieldArray } from "formik";
 import { Button } from "./ui/button";
 import { saveAs } from "file-saver";
 import { FormikInput } from "./FormikInput";
-interface Condition {
+
+export interface Condition {
   column_name: string;
   operator: string;
   value: string;
 }
 
-interface FormValues {
-  conditions: Condition[];
-}
-
-const generateSQLQuery = (values: FormValues, table: string): string => {
-  const { conditions } = values;
+const generateSQLQuery = (conditions: Condition[], table: string): string => {
   if (!table) return "";
-
   let query = `SELECT * FROM ${table}`;
   if (conditions.length > 0) {
     const conditionStrings = conditions.map(
@@ -34,40 +28,43 @@ const generateSQLQuery = (values: FormValues, table: string): string => {
   return query;
 };
 
-export const GenerateQuery = ({ table }: { table: string }) => (
-  <div className="w-full">
-    <h1 className="mb-2 flex justify-center font-bold text-lg">
-      Proposed Query
-    </h1>
-    <Formik
-      initialValues={{
-        conditions: [
-          {
-            column_name: "",
-            operator: "",
-            value: "",
-          },
-        ],
-      }}
-      onSubmit={async (values) => {
-        const sqlQuery = generateSQLQuery(values, table);
-        const blob = new Blob([sqlQuery]);
-        // alert(sqlQuery);
-        saveAs(blob, "sql_query.sql");
-      }}
-    >
-      {({ values }) => (
+const removeFilter = (index: number) => {};
+
+interface GenerateQueryProps {
+  table: string;
+  conditions: Condition[];
+}
+
+export default function GenerateQuery({
+  table,
+  conditions,
+}: GenerateQueryProps) {
+  const [conditionsList, setConditions] = useState<Condition[]>(conditions);
+
+  return (
+    <div className="w-full">
+      <h1 className="mb-2 flex justify-center font-bold text-lg">
+        Proposed Query
+      </h1>
+      <Formik
+        initialValues={{ conditions }}
+        onSubmit={async () => {
+          const sqlQuery = generateSQLQuery(conditions, table);
+          const blob = new Blob([sqlQuery]);
+          saveAs(blob, "sql_query.sql");
+        }}
+      >
         <Form>
           <div className="flex gap-2 items-center mb-1">
             <label htmlFor={`table`}>Table:</label>
             {table}
           </div>
           <FieldArray name="conditions">
-            {({ remove, push }) => (
+            {({ remove }) => (
               <div className="flex flex-col">
                 <h1>Filters:</h1>
-                {values.conditions.length > 0 &&
-                  values.conditions.map((condition, index) => (
+                {conditionsList.length > 0 &&
+                  conditionsList.map((condition, index) => (
                     <div
                       className="flex gap-3 border rounded-xl justify-between p-3 mb-2"
                       key={index}
@@ -77,10 +74,7 @@ export const GenerateQuery = ({ table }: { table: string }) => (
                           <label htmlFor={`conditions.${index}.column_name`}>
                             Column
                           </label>
-                          <FormikInput
-                            name={`conditions.${index}.column_name`}
-                            placeholder="Column name"
-                          />
+                          {condition.column_name}
                           <ErrorMessage
                             name={`conditions.${index}.column_name`}
                             component="div"
@@ -91,10 +85,7 @@ export const GenerateQuery = ({ table }: { table: string }) => (
                           <label htmlFor={`conditions.${index}.operator`}>
                             Operator
                           </label>
-                          <FormikInput
-                            name={`conditions.${index}.operator`}
-                            placeholder="<,>,>=,<=,=,!=,like,between"
-                          />
+                          {condition.operator}
                           <ErrorMessage
                             name={`conditions.${index}.operator`}
                             component="div"
@@ -105,10 +96,7 @@ export const GenerateQuery = ({ table }: { table: string }) => (
                           <label htmlFor={`conditions.${index}.value`}>
                             Value
                           </label>
-                          <FormikInput
-                            name={`conditions.${index}.value`}
-                            placeholder="Value of the condition"
-                          />
+                          {condition.value}
                           <ErrorMessage
                             name={`conditions.${index}.value`}
                             component="div"
@@ -128,16 +116,6 @@ export const GenerateQuery = ({ table }: { table: string }) => (
                       </div>
                     </div>
                   ))}
-                <Button
-                  type="button"
-                  className="text-blue-500"
-                  variant={"secondary"}
-                  onClick={() =>
-                    push({ column_name: "", operator: "", value: "" })
-                  }
-                >
-                  Add Filter
-                </Button>
               </div>
             )}
           </FieldArray>
@@ -147,7 +125,7 @@ export const GenerateQuery = ({ table }: { table: string }) => (
             </Button>
           </div>
         </Form>
-      )}
-    </Formik>
-  </div>
-);
+      </Formik>
+    </div>
+  );
+}

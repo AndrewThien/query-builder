@@ -1,19 +1,31 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
 import { useGlobalState } from "@/lib/GlobalStateContext";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { GenerateQuery } from "@/components/QueryBuilder";
+import GenerateQuery from "@/components/QueryBuilder";
 import { Blocks } from "lucide-react";
 import { COSD_table, SACT_table } from "@/lib/data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltips } from "@/components/Tooltips";
+import { Condition } from "@/components/QueryBuilder";
 
 const Page: React.FC = () => {
-  const { csvData } = useGlobalState();
+  const [conditions, setConditions] = useState<Condition[]>([]);
+
+  const handleAddCondition = (
+    column_name: string,
+    operator: string,
+    value: string
+  ) => {
+    setConditions((prevConditions) => [
+      ...prevConditions,
+      { column_name: column_name, operator: operator, value: value },
+    ]);
+  };
 
   return (
     <div className="container mx-24 my-5">
@@ -48,15 +60,21 @@ const Page: React.FC = () => {
           </div>
           <TabsContent value={SACT_table.table}>
             <div className="flex gap-10 justify-between">
-              <DataTable columns={columns} data={SACT_table.columns} />
+              <DataTable
+                columns={columns(handleAddCondition)}
+                data={SACT_table.columns}
+              />
               {/* TODO: add filter column name to search */}
-              <GenerateQuery table={SACT_table.table} />
+              <GenerateQuery table={SACT_table.table} conditions={conditions} />
             </div>
           </TabsContent>
           <TabsContent value={COSD_table.table}>
             <div className="flex gap-10 justify-between">
-              <DataTable columns={columns} data={COSD_table.columns} />
-              <GenerateQuery table={COSD_table.table} />
+              <DataTable
+                columns={columns(handleAddCondition)}
+                data={COSD_table.columns}
+              />
+              <GenerateQuery table={COSD_table.table} conditions={conditions} />
             </div>
           </TabsContent>
         </Tabs>

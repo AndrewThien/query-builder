@@ -16,7 +16,9 @@ import { Plus } from "lucide-react";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
-export const columns: ColumnDef<Columns>[] = [
+export const columns = (
+  addFilter: (column_name: string, operator: string, value: string) => void
+): ColumnDef<Columns>[] => [
   {
     header: "Column Name",
     cell: ({ row }) => {
@@ -33,12 +35,7 @@ export const columns: ColumnDef<Columns>[] = [
                   value: "",
                 }}
                 onSubmit={async (values) => {
-                  // TODO: clear the form onsubmit , ready for another filter
-                  // const sqlQuery = generateSQLQuery(values, table);
-                  // const blob = new Blob([sqlQuery]);
-                  // // alert(sqlQuery);
-                  // saveAs(blob, "sql_query.sql");
-                  alert(JSON.stringify(values));
+                  addFilter(values.column_name, values.operator, values.value);
                 }}
               >
                 {({ values, handleChange }) => (
