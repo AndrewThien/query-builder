@@ -49,6 +49,7 @@ const Page: React.FC = () => {
           <TabsContent value={SACT_table.table}>
             <div className="flex gap-10 justify-between">
               <DataTable columns={columns} data={SACT_table.columns} />
+              {/* TODO: add filter column name to search */}
               <GenerateQuery table={SACT_table.table} />
             </div>
           </TabsContent>
