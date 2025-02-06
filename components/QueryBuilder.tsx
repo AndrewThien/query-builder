@@ -137,7 +137,10 @@ export default function GenerateQuery({
               )}
             </FieldArray>
             <div className="flex justify-center">
-              <Button className="mt-3 text-lg items-center" type="submit">
+              <Button
+                className="mt-3 text-md items-center bg-blue-500"
+                type="submit"
+              >
                 Generate SQL query <Settings />
               </Button>
             </div>
