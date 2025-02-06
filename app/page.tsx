@@ -7,33 +7,47 @@ import { useGlobalState } from "@/lib/GlobalStateContext";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { InviteFriends } from "@/components/QueryBuilder";
-import { Activity, Blocks } from "lucide-react";
+import { Blocks } from "lucide-react";
+import { COSD_table, SACT_table } from "@/lib/data";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Page: React.FC = () => {
   const { csvData } = useGlobalState();
-  console.log("🚀 ~ csvData:", csvData);
 
   return (
-    <div className="container mx-auto my-5">
+    <div className="container mx-24 my-5">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-xl font-bold text-blue-500 flex items-center">
           Query Buider <Blocks className="ml-2" />
         </h1>
         <Link href="/upload">
-          <Button>Upload CSV</Button>
+          <Button disabled>Upload CSV</Button>
         </Link>
       </div>
 
-      {csvData.length > 0 ? (
-        <div className="flex gap-10 justify-center">
-          <DataTable columns={columns} data={csvData} />
-          <InviteFriends />
-        </div>
-      ) : (
-        <div className="text-center py-10">
-          No data available. Please upload a CSV file.
-        </div>
-      )}
+      <div className="flex gap-10 justify-center">
+        <Tabs defaultValue={"SACT"}>
+          <TabsList className="mb-2">
+            <a className="h-full">
+              <TabsTrigger value={SACT_table.table}>
+                {SACT_table.table}
+              </TabsTrigger>
+            </a>
+            <a className="h-full">
+              <TabsTrigger value={COSD_table.table}>
+                {COSD_table.table}
+              </TabsTrigger>
+            </a>
+          </TabsList>
+          <TabsContent value={SACT_table.table}>
+            <DataTable columns={columns} data={SACT_table.columns} />
+          </TabsContent>
+          <TabsContent value={COSD_table.table}>
+            <DataTable columns={columns} data={COSD_table.columns} />
+          </TabsContent>
+        </Tabs>
+        <InviteFriends />
+      </div>
     </div>
   );
 };
