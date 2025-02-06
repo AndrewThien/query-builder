@@ -12,18 +12,25 @@ import { COSD_table, SACT_table } from "@/lib/data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltips } from "@/components/Tooltips";
 import { Condition } from "@/components/QueryBuilder";
+import { HowItWork } from "@/components/HowItWork";
 
 const Page: React.FC = () => {
   const [conditions, setConditions] = useState<Condition[]>([]);
-
+  // TODO: seperate lgics for each table
   const handleAddCondition = (
     column_name: string,
     operator: string,
-    value: string
+    value: string,
+    reason: string
   ) => {
     setConditions((prevConditions) => [
       ...prevConditions,
-      { column_name: column_name, operator: operator, value: value },
+      {
+        column_name: column_name,
+        operator: operator,
+        value: value,
+        reason: reason,
+      },
     ]);
   };
 
@@ -71,11 +78,15 @@ const Page: React.FC = () => {
                 data={SACT_table.columns}
               />
               {/* TODO: add filter column name to search */}
-              <GenerateQuery
-                table={SACT_table.table}
-                conditions={conditions}
-                onRemoveCondition={handleRemoveCondition}
-              />
+              {conditions.length > 0 ? (
+                <GenerateQuery
+                  table={SACT_table.table}
+                  conditions={conditions}
+                  onRemoveCondition={handleRemoveCondition}
+                />
+              ) : (
+                <HowItWork />
+              )}
             </div>
           </TabsContent>
           <TabsContent value={COSD_table.table}>
@@ -84,11 +95,15 @@ const Page: React.FC = () => {
                 columns={columns(handleAddCondition)}
                 data={COSD_table.columns}
               />
-              <GenerateQuery
-                table={COSD_table.table}
-                conditions={conditions}
-                onRemoveCondition={handleRemoveCondition}
-              />
+              {conditions.length > 0 ? (
+                <GenerateQuery
+                  table={COSD_table.table}
+                  conditions={conditions}
+                  onRemoveCondition={handleRemoveCondition}
+                />
+              ) : (
+                <HowItWork />
+              )}
             </div>
           </TabsContent>
         </Tabs>

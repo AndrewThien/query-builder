@@ -8,6 +8,7 @@ export interface Condition {
   column_name: string;
   operator: string;
   value: string;
+  reason: string;
 }
 
 interface GenerateQueryProps {
@@ -22,7 +23,7 @@ export default function GenerateQuery({
   onRemoveCondition,
 }: GenerateQueryProps) {
   return (
-    <div className="w-full">
+    <div className="w-1/2">
       <h1 className="mb-2 flex justify-center font-bold text-lg">
         Proposed Query
       </h1>
@@ -43,7 +44,7 @@ export default function GenerateQuery({
             <FieldArray name="conditions">
               {() => (
                 <div className="flex flex-col">
-                  <h1>Filters:</h1>
+                  <h1>Conditions:</h1>
                   {conditions.length > 0 &&
                     conditions.map((condition, index) => (
                       <div
@@ -51,33 +52,48 @@ export default function GenerateQuery({
                         key={index}
                       >
                         <div className="flex flex-col gap-1 w-full">
-                          <div className="flex gap-2 items-center">
-                            <label htmlFor={`conditions.${index}.column_name`}>
-                              Column
-                            </label>
-                            {condition.column_name}
-                            <ErrorMessage
-                              name={`conditions.${index}.column_name`}
-                              component="div"
-                              className="field-error"
-                            />
+                          <div className="flex gap-3  justify-center">
+                            <div className="flex flex-col gap-2 items-center">
+                              <label
+                                htmlFor={`conditions.${index}.column_name`}
+                              >
+                                Column
+                              </label>
+                              {condition.column_name}
+                              <ErrorMessage
+                                name={`conditions.${index}.column_name`}
+                                component="div"
+                                className="field-error"
+                              />
+                            </div>
+                            <div className="flex flex-col gap-2 items-center">
+                              <label htmlFor={`conditions.${index}.operator`}>
+                                Operator
+                              </label>
+                              {condition.operator}
+                              <ErrorMessage
+                                name={`conditions.${index}.operator`}
+                                component="div"
+                                className="field-error"
+                              />
+                            </div>
+                            <div className="flex flex-col gap-2 items-center">
+                              <label htmlFor={`conditions.${index}.value`}>
+                                Value
+                              </label>
+                              {condition.value}
+                              <ErrorMessage
+                                name={`conditions.${index}.value`}
+                                component="div"
+                                className="field-error"
+                              />
+                            </div>
                           </div>
-                          <div className="flex gap-2 items-center">
-                            <label htmlFor={`conditions.${index}.operator`}>
-                              Operator
-                            </label>
-                            {condition.operator}
-                            <ErrorMessage
-                              name={`conditions.${index}.operator`}
-                              component="div"
-                              className="field-error"
-                            />
-                          </div>
-                          <div className="flex gap-2 items-center">
+                          <div className="flex gap-2 justify-center">
                             <label htmlFor={`conditions.${index}.value`}>
-                              Value
+                              Reason:
                             </label>
-                            {condition.value}
+                            {condition.reason}
                             <ErrorMessage
                               name={`conditions.${index}.value`}
                               component="div"
@@ -88,8 +104,8 @@ export default function GenerateQuery({
                         <div className="col">
                           <Button
                             type="button"
-                            className="text-red-500"
-                            variant={"ghost"}
+                            size={"sm"}
+                            variant={"destructive"}
                             onClick={() => onRemoveCondition(index)}
                           >
                             X
