@@ -23,6 +23,7 @@ export const columns = (
 ): ColumnDef<Columns>[] => [
   {
     header: "Column Name",
+    accessorKey: "name",
     cell: ({ row }) => {
       const name = row.original.name;
       return (
