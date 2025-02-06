@@ -30,7 +30,7 @@ export const columns = (
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
             <AccordionTrigger>{name}</AccordionTrigger>
-            <AccordionContent className="w-[300px]">
+            <AccordionContent className="w-[255px]">
               <Formik
                 initialValues={{
                   column_name: name,
@@ -49,14 +49,15 @@ export const columns = (
               >
                 {({ values, handleChange }) => (
                   <Form>
-                    <div className="flex flex-col gap-2">
-                      <div className="flex flex gap-2">
+                    <div className="flex flex-col gap-2 mt-1">
+                      <div className="flex flex-col gap-2">
                         <div className="flex gap-2 items-center">
-                          <label>Operator</label>
+                          <label className="font-semibold">Operator</label>
                           <Input
                             name={`operator`}
                             onChange={handleChange}
                             placeholder="<,>,>=,<=,=,!=,like,between"
+                            required
                           />
                           <ErrorMessage
                             name={`operator`}
@@ -65,11 +66,12 @@ export const columns = (
                           />
                         </div>
                         <div className="flex gap-2 items-center">
-                          <label>Value</label>
+                          <label className="font-semibold">Value</label>
                           <Input
                             name={`value`}
                             onChange={handleChange}
-                            placeholder="Value of the condition"
+                            placeholder="Right-side value of the filter"
+                            required
                           />
                           <ErrorMessage
                             name={`value`}
@@ -80,11 +82,11 @@ export const columns = (
                       </div>
                       <div>
                         <div className="flex gap-2 items-center">
-                          <label>Reason</label>
+                          <label className="font-semibold">Reason</label>
                           <Input
                             name={`reason`}
                             onChange={handleChange}
-                            placeholder="Value of the condition"
+                            placeholder="Reason for requesting this"
                           />
                           <ErrorMessage
                             name={`reason`}

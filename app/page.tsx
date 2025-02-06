@@ -43,7 +43,7 @@ const Page: React.FC = () => {
   return (
     <div className="container mx-24 my-5">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-xl font-bold text-blue-500 flex items-center">
+        <h1 className="text-xl font-extrabold text-blue-500 flex items-center">
           Query Buider <Blocks className="ml-2" />
         </h1>
         <Link href="/upload">
@@ -54,7 +54,7 @@ const Page: React.FC = () => {
       <div>
         <Tabs defaultValue={"SACT"}>
           <div className="flex items-center gap-2">
-            <h1 className="text-lg flex">
+            <h1 className="text-lg font-semibold flex">
               Available Table{" "}
               <Tooltips content="Tables that available inside Research View" />
             </h1>

@@ -68,7 +68,7 @@ export default function GenerateQuery({
             <FieldArray name="conditions">
               {() => (
                 <div className="flex flex-col">
-                  <h1 className="font-bold">Conditions:</h1>
+                  <h1 className="font-bold mb-2">Conditions:</h1>
                   {conditions.length > 0 &&
                     conditions.map((condition, index) => (
                       <div
