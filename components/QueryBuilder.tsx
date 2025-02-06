@@ -4,18 +4,6 @@ import { Formik, Field, Form, ErrorMessage, FieldArray } from "formik";
 import { Button } from "./ui/button";
 import { saveAs } from "file-saver";
 import { FormikInput } from "./FormikInput";
-
-const initialValues = {
-  table: "",
-  conditions: [
-    {
-      column_name: "",
-      operator: "",
-      value: "",
-    },
-  ],
-};
-
 interface Condition {
   column_name: string;
   operator: string;
@@ -23,12 +11,11 @@ interface Condition {
 }
 
 interface FormValues {
-  table: string;
   conditions: Condition[];
 }
 
-const generateSQLQuery = (values: FormValues): string => {
-  const { table, conditions } = values;
+const generateSQLQuery = (values: FormValues, table: string): string => {
+  const { conditions } = values;
   if (!table) return "";
 
   let query = `SELECT * FROM ${table}`;
@@ -47,14 +34,23 @@ const generateSQLQuery = (values: FormValues): string => {
   return query;
 };
 
-export const InviteFriends = () => (
-  <div>
-    <h1 className="mb-5 font-bold text-lg">Query builder</h1>
+export const GenerateQuery = ({ table }: { table: string }) => (
+  <div className="w-full">
+    <h1 className="mb-2 flex justify-center font-bold text-lg">
+      Proposed Query
+    </h1>
     <Formik
-      initialValues={initialValues}
+      initialValues={{
+        conditions: [
+          {
+            column_name: "",
+            operator: "",
+            value: "",
+          },
+        ],
+      }}
       onSubmit={async (values) => {
-        await new Promise((r) => setTimeout(r, 500));
-        const sqlQuery = generateSQLQuery(values);
+        const sqlQuery = generateSQLQuery(values, table);
         const blob = new Blob([sqlQuery]);
         // alert(sqlQuery);
         saveAs(blob, "sql_query.sql");
@@ -64,19 +60,19 @@ export const InviteFriends = () => (
         <Form>
           <div className="flex gap-2 items-center mb-1">
             <label htmlFor={`table`}>Table:</label>
-            <FormikInput name={`table`} placeholder="Table name" />
+            {table}
           </div>
           <FieldArray name="conditions">
             {({ remove, push }) => (
               <div className="flex flex-col">
                 <h1>Filters:</h1>
                 {values.conditions.length > 0 &&
-                  values.conditions.map((friend, index) => (
+                  values.conditions.map((condition, index) => (
                     <div
-                      className="flex gap-3 border rounded-xl p-3 mb-2"
+                      className="flex gap-3 border rounded-xl justify-between p-3 mb-2"
                       key={index}
                     >
-                      <div className="flex flex-col gap-1">
+                      <div className="flex flex-col gap-1 w-full">
                         <div className="flex gap-2 items-center">
                           <label htmlFor={`conditions.${index}.column_name`}>
                             Column

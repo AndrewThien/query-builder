@@ -6,7 +6,7 @@ import { columns } from "./columns";
 import { useGlobalState } from "@/lib/GlobalStateContext";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { InviteFriends } from "@/components/QueryBuilder";
+import { GenerateQuery } from "@/components/QueryBuilder";
 import { Blocks } from "lucide-react";
 import { COSD_table, SACT_table } from "@/lib/data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -26,38 +26,39 @@ const Page: React.FC = () => {
         </Link>
       </div>
 
-      <div className="flex gap-10 justify-center">
-        <div>
-          <Tabs defaultValue={"SACT"}>
-            <div className="flex items-center gap-2">
-              <h1 className="text-lg flex">
-                Available Table{" "}
-                <Tooltips content="Tables that available inside Research View" />
-              </h1>
-              <TabsList className="">
-                <a className="h-full">
-                  <TabsTrigger value={SACT_table.table}>
-                    {SACT_table.table}
-                  </TabsTrigger>
-                </a>
-                <a className="h-full">
-                  <TabsTrigger value={COSD_table.table}>
-                    {COSD_table.table}
-                  </TabsTrigger>
-                </a>
-              </TabsList>
-            </div>
-            <TabsContent value={SACT_table.table}>
+      <div>
+        <Tabs defaultValue={"SACT"}>
+          <div className="flex items-center gap-2">
+            <h1 className="text-lg flex">
+              Available Table{" "}
+              <Tooltips content="Tables that available inside Research View" />
+            </h1>
+            <TabsList className="">
+              <a className="h-full">
+                <TabsTrigger value={SACT_table.table}>
+                  {SACT_table.table}
+                </TabsTrigger>
+              </a>
+              <a className="h-full">
+                <TabsTrigger value={COSD_table.table}>
+                  {COSD_table.table}
+                </TabsTrigger>
+              </a>
+            </TabsList>
+          </div>
+          <TabsContent value={SACT_table.table}>
+            <div className="flex gap-10 justify-between">
               <DataTable columns={columns} data={SACT_table.columns} />
-            </TabsContent>
-            <TabsContent value={COSD_table.table}>
+              <GenerateQuery table={SACT_table.table} />
+            </div>
+          </TabsContent>
+          <TabsContent value={COSD_table.table}>
+            <div className="flex gap-10 justify-between">
               <DataTable columns={columns} data={COSD_table.columns} />
-            </TabsContent>
-          </Tabs>
-        </div>
-        <div>
-          <InviteFriends />
-        </div>
+              <GenerateQuery table={COSD_table.table} />
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
