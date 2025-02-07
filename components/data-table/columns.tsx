@@ -2,17 +2,6 @@
 
 import { Columns } from "@/types/table";
 import { ColumnDef } from "@tanstack/react-table";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Formik, Form, ErrorMessage } from "formik";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Plus } from "lucide-react";
-import { Mandatory } from "@/components/Mandatory";
 import AccordionFormik from "../AccordionFormik";
 
 export const columns = (

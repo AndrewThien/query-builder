@@ -31,7 +31,12 @@ export default function GenerateQuery({
         Proposed Query
       </h1>
       <Formik
-        initialValues={{ conditions, requestor: "", org: "" }}
+        initialValues={{
+          conditions,
+          requestor: "",
+          org: "",
+          general_reason: "",
+        }}
         onSubmit={async (values) => {
           const sqlQuery = generateSQLQuery(conditions, table);
           const blob = new Blob([sqlQuery]);
@@ -63,6 +68,17 @@ export default function GenerateQuery({
               <Input
                 name="org"
                 placeholder="Your Organisation"
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="flex gap-2 items-center mb-1">
+              <label className="font-bold flex">
+                Reason <Mandatory />
+              </label>
+              <Input
+                name="general_reason"
+                placeholder="General reason for requesting this data"
                 onChange={handleChange}
                 required
               />
