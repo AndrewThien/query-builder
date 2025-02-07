@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
 import { Mandatory } from "@/components/Mandatory";
+import * as Yup from "yup";
+import { Tooltips } from "./Tooltips";
 
 export default function AccordionFormik({
   column_name,
@@ -25,6 +27,12 @@ export default function AccordionFormik({
     table: string
   ) => void;
 }) {
+  const validationSchema = Yup.object().shape({
+    operator: Yup.string().oneOf(
+      [">", "<", "<=", ">=", "=", "<>", "!=", "!<", "!>", "BETWEEN"],
+      `Supported operators are >,<,<=,>=,=,<>,!=,!<,!>,BETWEEN.`
+    ),
+  });
   return (
     <Accordion type="single" collapsible>
       <AccordionItem value="item-1">
@@ -47,27 +55,35 @@ export default function AccordionFormik({
                 values.table
               );
             }}
+            validationSchema={validationSchema}
           >
             {({ values, handleChange }) => (
               <Form>
                 <div className="flex flex-col gap-2 mt-1">
                   <div className="flex flex-col gap-2">
-                    <div className="flex gap-2 items-center">
-                      <label className="font-semibold flex">
-                        Operator <Mandatory />
-                      </label>
-                      <Input
-                        name={`operator`}
-                        onChange={handleChange}
-                        placeholder="<,>,>=,<=,=,!=,like,between"
-                        required
-                      />
+                    <div>
+                      <div className="flex gap-2 items-center">
+                        <label className="font-semibold flex">
+                          Operator <Mandatory />{" "}
+                          <Tooltips
+                            content="Supported operators are >,<,<=,>=,=,<>,!=,!<,!>,BETWEEN."
+                            link="https://learn.microsoft.com/en-us/sql/t-sql/language-elements/comparison-operators-transact-sql?view=sql-server-ver15"
+                          />
+                        </label>
+                        <Input
+                          name={`operator`}
+                          onChange={handleChange}
+                          placeholder="Comparison Operator"
+                          required
+                        />
+                      </div>
                       <ErrorMessage
                         name={`operator`}
                         component="div"
-                        className="field-error"
+                        className="text-red-500"
                       />
                     </div>
+
                     <div className="flex gap-2 items-center">
                       <label className="font-semibold flex">
                         Value <Mandatory />
@@ -81,7 +97,7 @@ export default function AccordionFormik({
                       <ErrorMessage
                         name={`value`}
                         component="div"
-                        className="field-error"
+                        className="text-red-500"
                       />
                     </div>
                   </div>
@@ -92,11 +108,6 @@ export default function AccordionFormik({
                         name={`reason`}
                         onChange={handleChange}
                         placeholder="Reason for requesting this"
-                      />
-                      <ErrorMessage
-                        name={`reason`}
-                        component="div"
-                        className="field-error"
                       />
                     </div>
                   </div>

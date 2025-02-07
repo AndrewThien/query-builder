@@ -18,7 +18,7 @@ export function Tooltips({
     <TooltipProvider delayDuration={100}>
       <Tooltip>
         <TooltipTrigger asChild>
-          <InfoIcon className="ml-1 size-3 text-blue-400" />
+          <InfoIcon className="ml-1 size-4 text-blue-400" />
         </TooltipTrigger>
         <TooltipContent>
           <p>
