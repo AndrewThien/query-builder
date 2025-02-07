@@ -33,7 +33,7 @@ export default function GenerateQuery({
       <Formik
         initialValues={{ conditions, requestor: "", org: "" }}
         onSubmit={async (values) => {
-          const sqlQuery = generateSQLQuery(values.conditions, table);
+          const sqlQuery = generateSQLQuery(conditions, table);
           const blob = new Blob([sqlQuery]);
           saveAs(
             blob,
