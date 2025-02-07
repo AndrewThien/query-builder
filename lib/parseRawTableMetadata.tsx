@@ -5,7 +5,7 @@ const rawData = `
 ...
 `;
 
-const parseColumns = (data: string): Columns[] => {
+const parseColumns = (data: string, table: string): Columns[] => {
   const lines = data.trim().split("\n");
   return lines.map((line) => {
     const match = line.match(/\[(.*?)\] \[(.*?)\](?:\((\d+)\))?(.*)/);
@@ -23,9 +23,10 @@ const parseColumns = (data: string): Columns[] => {
       primary,
       max_length: max_length ? parseInt(max_length, 10) : undefined,
       description,
+      table,
     };
   });
 };
 
-const columns: Columns[] = parseColumns(rawData);
+const columns: Columns[] = parseColumns(rawData, "COSD");
 console.log(columns);
