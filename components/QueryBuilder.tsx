@@ -1,5 +1,5 @@
 import React from "react";
-import { Formik, Form, ErrorMessage, FieldArray } from "formik";
+import { Formik, Form, FieldArray } from "formik";
 import { Button } from "./ui/button";
 import { saveAs } from "file-saver";
 import { generateSQLQuery } from "@/lib/utils";
@@ -86,39 +86,19 @@ export default function GenerateQuery({
                             <div className="flex flex-col gap-2 items-center">
                               <label className="font-bold">Column</label>
                               {condition.column_name}
-                              <ErrorMessage
-                                name={`column_name`}
-                                component="div"
-                                className="field-error"
-                              />
                             </div>
                             <div className="flex flex-col gap-2 items-center">
                               <label className="font-bold">Operator</label>
                               {condition.operator}
-                              <ErrorMessage
-                                name={`operator`}
-                                component="div"
-                                className="field-error"
-                              />
                             </div>
                             <div className="flex flex-col gap-2 items-center">
                               <label className="font-bold">Value</label>
                               {condition.value}
-                              <ErrorMessage
-                                name={`value`}
-                                component="div"
-                                className="field-error"
-                              />
                             </div>
                           </div>
                           <div className="flex gap-2 justify-start">
                             <label className="font-bold">Reason:</label>
                             {condition.reason}
-                            <ErrorMessage
-                              name={`reason`}
-                              component="div"
-                              className="field-error"
-                            />
                           </div>
                         </div>
                         <div className="col">
