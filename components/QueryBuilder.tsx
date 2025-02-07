@@ -17,7 +17,7 @@ export interface Condition {
 interface GenerateQueryProps {
   table: string;
   conditions: Condition[];
-  onRemoveCondition: (index: number) => void;
+  onRemoveCondition: (index: number, table: string) => void;
 }
 
 export default function GenerateQuery({
@@ -126,7 +126,7 @@ export default function GenerateQuery({
                             type="button"
                             size={"sm"}
                             variant={"destructive"}
-                            onClick={() => onRemoveCondition(index)}
+                            onClick={() => onRemoveCondition(index, table)}
                           >
                             X
                           </Button>
@@ -137,10 +137,7 @@ export default function GenerateQuery({
               )}
             </FieldArray>
             <div className="flex justify-center">
-              <Button
-                className="mt-3 text-md items-center bg-blue-500"
-                type="submit"
-              >
+              <Button className="mt-3 text-md items-center" type="submit">
                 Generate SQL query <Settings />
               </Button>
             </div>

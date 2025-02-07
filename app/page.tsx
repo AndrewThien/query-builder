@@ -15,27 +15,48 @@ import { Condition } from "@/components/QueryBuilder";
 import { HowItWork } from "@/components/HowItWork";
 
 const Page: React.FC = () => {
-  const [conditions, setConditions] = useState<Condition[]>([]);
+  const [SACT_conditions, setConditionsSACT] = useState<Condition[]>([]);
+  const [COSD_conditions, setConditionsCOSD] = useState<Condition[]>([]);
+
   // TODO: seperate lgics for each table
   const handleAddCondition = (
     column_name: string,
     operator: string,
     value: string,
-    reason: string
+    reason: string,
+    table: string
   ) => {
-    setConditions((prevConditions) => [
-      ...prevConditions,
-      {
-        column_name: column_name,
-        operator: operator,
-        value: value,
-        reason: reason,
-      },
-    ]);
+    if (table == SACT_table.table) {
+      setConditionsSACT((prevConditions) => [
+        ...prevConditions,
+        {
+          column_name: column_name,
+          operator: operator,
+          value: value,
+          reason: reason,
+        },
+      ]);
+    } else if (table == COSD_table.table) {
+      setConditionsCOSD((prevConditions) => [
+        ...prevConditions,
+        {
+          column_name: column_name,
+          operator: operator,
+          value: value,
+          reason: reason,
+        },
+      ]);
+    }
   };
 
-  const handleRemoveCondition = (index: number) => {
-    setConditions((prevConditions) =>
+  const handleRemoveCondition = (index: number, table: string) => {
+    if (table == SACT_table.table) {
+      setConditionsSACT((prevConditions) =>
+        prevConditions.filter((_, i) => i !== index)
+      );
+    } else if (table == COSD_table.table) {
+    }
+    setConditionsCOSD((prevConditions) =>
       prevConditions.filter((_, i) => i !== index)
     );
   };
@@ -52,7 +73,7 @@ const Page: React.FC = () => {
       </div>
 
       <div>
-        <Tabs defaultValue={"SACT"}>
+        <Tabs defaultValue={SACT_table.table}>
           <div className="flex items-center gap-2">
             <h1 className="text-lg font-semibold flex">
               Available Table{" "}
@@ -84,10 +105,10 @@ const Page: React.FC = () => {
                 data={SACT_table.columns}
               />
               {/* TODO: add filter column name to search */}
-              {conditions.length > 0 ? (
+              {SACT_conditions.length > 0 ? (
                 <GenerateQuery
                   table={SACT_table.table}
-                  conditions={conditions}
+                  conditions={SACT_conditions}
                   onRemoveCondition={handleRemoveCondition}
                 />
               ) : (
@@ -101,10 +122,10 @@ const Page: React.FC = () => {
                 columns={columns(handleAddCondition)}
                 data={COSD_table.columns}
               />
-              {conditions.length > 0 ? (
+              {COSD_conditions.length > 0 ? (
                 <GenerateQuery
                   table={COSD_table.table}
-                  conditions={conditions}
+                  conditions={COSD_conditions}
                   onRemoveCondition={handleRemoveCondition}
                 />
               ) : (

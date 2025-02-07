@@ -15,36 +15,40 @@ import { Plus } from "lucide-react";
 import { Mandatory } from "@/components/Mandatory";
 
 export const columns = (
-  addFilter: (
+  addCondition: (
     column_name: string,
     operator: string,
     value: string,
-    reason: string
+    reason: string,
+    table: string
   ) => void
 ): ColumnDef<Columns>[] => [
   {
     header: "Column Name",
     accessorKey: "name",
     cell: ({ row }) => {
-      const name = row.original.name;
+      const column_name = row.original.name;
+      const table = row.original.table;
       return (
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
-            <AccordionTrigger>{name}</AccordionTrigger>
+            <AccordionTrigger>{column_name}</AccordionTrigger>
             <AccordionContent className="w-[255px]">
               <Formik
                 initialValues={{
-                  column_name: name,
+                  column_name: column_name,
                   operator: "",
                   value: "",
                   reason: "",
+                  table: table,
                 }}
                 onSubmit={async (values) => {
-                  addFilter(
+                  addCondition(
                     values.column_name,
                     values.operator,
                     values.value,
-                    values.reason
+                    values.reason,
+                    values.table
                   );
                 }}
               >

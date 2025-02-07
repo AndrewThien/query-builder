@@ -17,4 +17,5 @@ export interface Columns {
   primary: boolean;
   max_length?: number;
   description: string;
+  table: string;
 }

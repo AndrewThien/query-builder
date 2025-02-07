@@ -9,6 +9,7 @@ export const SACT_table: ResearchViewTable = {
       primary: true,
       max_length: undefined,
       description: "Required",
+      table: "SACT",
     },
     {
       name: "ETL_DATE",
@@ -16,6 +17,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: undefined,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "DIRECT_CARE_PUBLISHED_RUNID",
@@ -23,6 +25,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: undefined,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "DATASET_NAME",
@@ -30,6 +33,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 150,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "NDO_RUN_DATE",
@@ -37,6 +41,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: undefined,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "FILE_NAME",
@@ -44,6 +49,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 75,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "FILE_PERIOD_START",
@@ -51,6 +57,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 10,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "FILE_PERIOD_END",
@@ -58,6 +65,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 10,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "NHS_NUMBER",
@@ -65,6 +73,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 4000,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "LOCAL_PATIENT_IDENTIFIER",
@@ -72,6 +81,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 20,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "NHS_NUMBER_STATUS",
@@ -79,6 +89,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 2,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "PERSON_FAMILY_NAME",
@@ -86,6 +97,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 35,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "PERSON_GIVEN_NAME",
@@ -93,6 +105,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 35,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "DATE_OF_BIRTH_YEAR",
@@ -100,6 +113,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 4,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "DATE_OF_BIRTH_MONTH",
@@ -107,6 +121,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 2,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "DATE_OF_BIRTH_MID_MONTH",
@@ -114,6 +129,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: undefined,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "PERSON_STATED_GENDER_CODE",
@@ -121,6 +137,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 1,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "PATIENT_POSTCODE",
@@ -128,6 +145,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 8,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "LLSOA",
@@ -135,6 +153,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 9,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "CONSULTANT_GMC_CODE",
@@ -142,6 +161,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 8,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "CONSULTANT_SPEC_CODE",
@@ -149,6 +169,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 8,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "ORG_ID_CODE_PROVIDER",
@@ -156,6 +177,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 5,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "PRIMARY_DIAGNOSIS",
@@ -163,6 +185,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 6,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "MORPHOLOGY_ICD_O",
@@ -170,6 +193,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 7,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "DIAGNOSIS_CODE_SNOMED",
@@ -177,6 +201,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 18,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "ADJUNCTIVE_THERAPY",
@@ -184,6 +209,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 1,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "INTENT_OF_TREATMENT",
@@ -191,6 +217,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 2,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "REGIMEN",
@@ -198,6 +225,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 150,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "HEIGHT_START_REG",
@@ -205,6 +233,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: undefined,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "WEIGHT_START_OF_REG",
@@ -212,6 +241,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: undefined,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "PERF_STATUS_START_REG_AD",
@@ -219,6 +249,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 1,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "CO_MORBIDITY_ADJUSTMENT",
@@ -226,6 +257,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 1,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "DATE_DECISION_TO_TREAT_YEAR",
@@ -233,6 +265,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 4,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "DATE_DECISION_TO_TREAT_MONTH",
@@ -240,6 +273,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 2,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "DATE_DECISION_TO_TREAT_MID_MONTH",
@@ -247,6 +281,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: undefined,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "START_DATE_REGIMEN_YEAR",
@@ -254,6 +289,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 4,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "START_DATE_REGIMEN_MONTH",
@@ -261,6 +297,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 2,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "START_DATE_REGIMEN_MID_MONTH",
@@ -268,6 +305,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: undefined,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "CLINICAL_TRIAL",
@@ -275,6 +313,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 2,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "CYCLE_NUMBER",
@@ -282,6 +321,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: undefined,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "START_DATE_CYCLE_YEAR",
@@ -289,6 +329,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 4,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "START_DATE_CYCLE_MONTH",
@@ -296,6 +337,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 2,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "START_DATE_CYCLE_MID_MONTH",
@@ -303,6 +345,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: undefined,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "WEIGHT_START_CYCLE",
@@ -310,6 +353,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: undefined,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "PERF_STAT_START_CYCLE_AD",
@@ -317,6 +361,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 1,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "DRUG_NAME",
@@ -324,6 +369,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 55,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "DM_D",
@@ -331,6 +377,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 18,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "ACTUAL_DOSE_PER_ADMIN",
@@ -338,6 +385,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 50,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "ADMIN_MEAS_PER_ACTUAL_DOSE",
@@ -345,6 +393,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 8,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "OT_ADMIN_MEAS_PER_ACTUAL_DOSE",
@@ -352,6 +401,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 15,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "UNIT_MEAS_SNOMED_CT_DM_D",
@@ -359,6 +409,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 18,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "SACT_ADMINISTRATION_ROUTE",
@@ -366,6 +417,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 2,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "ROUTE_ADMIN_SNOMED_CT_DM_D",
@@ -373,6 +425,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 18,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "ADMINISTRATION_DATE_YEAR",
@@ -380,6 +433,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 4,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "ADMINISTRATION_DATE_MONTH",
@@ -387,6 +441,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 2,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "ADMINISTRATION_DATE_MID_MONTH",
@@ -394,6 +449,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: undefined,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "ORG_IDENTIFIER_SACT_ADMIN",
@@ -401,6 +457,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 5,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "REG_MOD_DOSE_REDUCTION",
@@ -408,6 +465,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 1,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "REG_OUT_CUR_COMP_PLAN",
@@ -415,6 +473,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 1,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "REG_OUT_CUR_N_COMP_AS_PLAN_RES",
@@ -422,6 +481,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 1,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "OT_REG_OUT_N_COMP_AS_PLAN_RES",
@@ -429,6 +489,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 55,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "REG_OUT_NON_CURATIVE",
@@ -436,6 +497,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 1,
       description: "Optional",
+      table: "SACT",
     },
     {
       name: "REG_OUT_TOXICITY",
@@ -443,6 +505,7 @@ export const SACT_table: ResearchViewTable = {
       primary: false,
       max_length: 1,
       description: "Optional",
+      table: "SACT",
     },
   ],
 };
@@ -456,6 +519,7 @@ export const COSD_table: ResearchViewTable = {
       primary: true,
       max_length: 0,
       description: "Coming soon",
+      table: "COSD",
     },
   ],
 };
