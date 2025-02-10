@@ -6,7 +6,7 @@ on:
       - main
 
     paths:
-      - "./workers"
+      - "workers/**"
 
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: "./workers"
