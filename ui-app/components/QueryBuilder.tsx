@@ -12,6 +12,7 @@ export interface Condition {
   operator: string;
   value: string;
   reason: string;
+  data_type: string;
 }
 
 interface GenerateQueryProps {
@@ -38,14 +39,30 @@ export default function GenerateQuery({
           general_reason: "",
         }}
         onSubmit={async (values) => {
-          const sqlQuery = generateSQLQuery(conditions, table);
-          const blob = new Blob([sqlQuery]);
-          saveAs(
-            blob,
-            `${values.requestor}-${
-              values.org
-            }-${table}-${new Date().toLocaleTimeString()}_${new Date().toLocaleDateString()}.sql`
-          );
+          const response = await fetch("/api/generate_SQL", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ table, conditions }),
+          });
+
+          if (!response.ok) {
+            console.error("Failed to generate SQL query");
+            return;
+          }
+
+          const sqlQuery = await response.json();
+          console.log("🚀 ~ onSubmit={ ~ sqlQuery:", sqlQuery);
+
+          // const blob = new Blob([sqlQuery]);
+          // saveAs(
+          //   blob,
+          //   `${values.requestor}-${
+          //     values.org
+          //   }-${table}-${new Date().toLocaleTimeString()}_${new Date().toLocaleDateString()}.sql`
+          // );
+          // // Display the returned data in the console or update the UI as needed
         }}
       >
         {({ values, handleChange }) => (
