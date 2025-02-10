@@ -1,13 +1,14 @@
-name: Deploy to Azure
+name: Deploy UI app to Azure
 
 on:
-  release:
-    types: [released]
+  push:
+    branches:
+      - main
+    paths:
+      - "./ui-app"
 
 env:
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: "./workers"
   AZURE_WEBAPP_PACKAGE_PATH: "./ui-app"
-  PYTHON_VERSION: "3.11"
   NODE_VERSION: 20
 
 jobs:
@@ -54,45 +55,6 @@ jobs:
         with:
           path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/.next/standalone
           name: uiwebapp
-          include-hidden-files: true
-
-  build-and-publish-workers:
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Checkout GitHub Action"
-        uses: actions/checkout@v4
-
-      - name: Setup Python ${{ env.PYTHON_VERSION }} Environment
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      - name: "Install Poetry"
-        uses: snok/install-poetry@v1
-        with:
-          plugins: poetry-plugin-export
-
-      - name: "Resolve Project Dependencies Using Poetry"
-        run: |
-          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
-          poetry config virtualenvs.create false
-          poetry export --format requirements.txt --output requirements.txt --without-hashes
-          popd
-        shell: bash
-
-      - name: "Install Dependencies Using Pip"
-        shell: bash
-        run: |
-          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt --target=".python_packages/lib/site-packages"
-          popd
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: functionsapp
-          path: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
           include-hidden-files: true
 
   # Deploy Next.js Client App Production
