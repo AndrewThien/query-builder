@@ -18,7 +18,8 @@ export default function TableView() {
     operator: string,
     value: string,
     reason: string,
-    table: string
+    table: string,
+    data_type: string
   ) => {
     if (table == SACT_table.table) {
       setConditionsSACT((prevConditions) => [
@@ -28,6 +29,7 @@ export default function TableView() {
           operator: operator,
           value: value,
           reason: reason,
+          data_type: data_type,
         },
       ]);
     } else if (table == COSD_table.table) {
@@ -38,6 +40,7 @@ export default function TableView() {
           operator: operator,
           value: value,
           reason: reason,
+          data_type: data_type,
         },
       ]);
     }

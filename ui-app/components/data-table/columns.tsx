@@ -10,20 +10,22 @@ export const columns = (
     operator: string,
     value: string,
     reason: string,
-    table: string
+    table: string,
+    data_type: string
   ) => void
 ): ColumnDef<Columns>[] => [
   {
     header: "Column Name",
     accessorKey: "name",
     cell: ({ row }) => {
-      const column_name = row.original.name;
-      const table = row.original.table;
+      const { name, table, data_type } = row.original;
+
       return (
         <AccordionFormik
-          column_name={column_name}
+          column_name={name}
           table={table}
           addCondition={addCondition}
+          data_type={data_type}
         />
       );
     },

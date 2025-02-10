@@ -16,15 +16,18 @@ export default function AccordionFormik({
   column_name,
   table,
   addCondition,
+  data_type,
 }: {
   column_name: string;
   table: string;
+  data_type: string;
   addCondition: (
     column_name: string,
     operator: string,
     value: string,
     reason: string,
-    table: string
+    table: string,
+    data_type: string
   ) => void;
 }) {
   const validationSchema = Yup.object().shape({
@@ -45,6 +48,7 @@ export default function AccordionFormik({
               value: "",
               reason: "",
               table: table,
+              data_type: data_type,
             }}
             onSubmit={async (values) => {
               addCondition(
@@ -52,7 +56,8 @@ export default function AccordionFormik({
                 values.operator,
                 values.value,
                 values.reason,
-                values.table
+                values.table,
+                values.data_type
               );
             }}
             validationSchema={validationSchema}
