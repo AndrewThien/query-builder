@@ -19,7 +19,7 @@ def sqlGeneration(req: func.HttpRequest) -> func.HttpResponse:
 
     if name:
         return func.HttpResponse(
-            f"Hi hi, {name}. This HTTP triggered function executed successfully."
+            f"Hi, {name}. This HTTP triggered function executed successfully."
         )
     else:
         return func.HttpResponse(
