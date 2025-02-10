@@ -42,12 +42,11 @@ jobs:
         run: npm run build --workspaces=false
         working-directory: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
-      # Disable because UI app doesn't have Public folder yet
-      # - name: Copy Static Assets
-      #   run: |
-      #     cp -r .next/static .next/standalone/.next/
-      #     cp -r public .next/standalone/
-      #   working-directory: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      - name: Copy Static Assets
+        run: |
+          cp -r .next/static .next/standalone/.next/
+          cp -r public .next/standalone/
+        working-directory: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
       - name: Publish webapp artifact
         uses: actions/upload-artifact@v4
