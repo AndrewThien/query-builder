@@ -28,6 +28,8 @@ def cast_value(column: Column, value: Any):
             return float(value)
         elif python_type is bool:
             return bool(value)
+        elif python_type is bytes:
+            return bytes(value, "utf-8")
         elif python_type is datetime.date:
             return datetime(value)
         # TODO: do we need to handle datetime ("%Y-%m-%d %H:%M:%S") cast as well?
