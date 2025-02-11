@@ -10,7 +10,9 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
 
     const response = await axios.post(
-      "http://localhost:7071/api/sqlGeneration",
+      process.env.WORKERS_URL
+        ? `${process.env.WORKERS_URL}?code=${process.env.WORKERS_KEY}`
+        : "http://localhost:7071/api/sqlGeneration",
       data
     );
     return NextResponse.json(response.data);
