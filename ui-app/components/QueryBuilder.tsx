@@ -53,16 +53,14 @@ export default function GenerateQuery({
           }
 
           const sqlQuery = await response.json();
-          console.log("🚀 ~ onSubmit={ ~ sqlQuery:", sqlQuery);
 
-          // const blob = new Blob([sqlQuery]);
-          // saveAs(
-          //   blob,
-          //   `${values.requestor}-${
-          //     values.org
-          //   }-${table}-${new Date().toLocaleTimeString()}_${new Date().toLocaleDateString()}.sql`
-          // );
-          // // Display the returned data in the console or update the UI as needed
+          const blob = new Blob([sqlQuery]);
+          saveAs(
+            blob,
+            `${values.requestor}-${
+              values.org
+            }-${table}-${new Date().toLocaleTimeString()}_${new Date().toLocaleDateString()}.sql`
+          );
         }}
       >
         {({ values, handleChange }) => (
