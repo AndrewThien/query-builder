@@ -1,2 +1,3 @@
 azure-functions
 sqlalchemy>=2.0.38
+pre-commit
