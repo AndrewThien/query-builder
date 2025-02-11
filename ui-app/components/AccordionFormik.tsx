@@ -11,6 +11,7 @@ import { Plus } from "lucide-react";
 import { Mandatory } from "@/components/Mandatory";
 import * as Yup from "yup";
 import { Tooltips } from "./Tooltips";
+import { DatePickerField } from "./DatePicker";
 
 export default function AccordionFormik({
   column_name,
@@ -93,12 +94,17 @@ export default function AccordionFormik({
                       <label className="font-semibold flex">
                         Value <Mandatory />
                       </label>
-                      <Input
-                        name={`value`}
-                        onChange={handleChange}
-                        placeholder="Right-side value of the filter"
-                        required
-                      />
+                      {data_type == "date" || data_type == "datetime" ? (
+                        <DatePickerField name="value" />
+                      ) : (
+                        <Input
+                          name={`value`}
+                          onChange={handleChange}
+                          placeholder="Right-side value of the filter"
+                          required
+                        />
+                      )}
+
                       <ErrorMessage
                         name={`value`}
                         component="div"
