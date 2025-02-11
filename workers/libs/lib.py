@@ -13,6 +13,7 @@ def cast_value(column: Column, value: Any):
     """Helper function to cast values based on column type"""
     # Get the type in Python of the column in the DB
     python_type = column.type.python_type
+    print("python_type: ", python_type.__name__)
     # Checking mismatch
     if not isinstance(value, python_type):
         logging.warning(
