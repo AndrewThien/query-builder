@@ -86,7 +86,7 @@ def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
     table_name: str = req_json.get("table", "")
     conditions: list = req_json.get("conditions", [])
     # Generate SQL
-    sql = generate_sql_new(table_name=table_name, conditions=conditions)
+    sql = f"{table_name}{conditions}"
 
     return func.HttpResponse(
         sql,
