@@ -53,14 +53,18 @@ export default function GenerateQuery({
           }
 
           const sqlQuery = await response.json();
-
+          // Form the file name form cleaned form values + datetime value
+          const fileName = `${values.requestor.replace(
+            /[^a-zA-Z0-9]/g,
+            "_"
+          )}-${values.org.replace(
+            /[^a-zA-Z0-9]/g,
+            "_"
+          )}-${table}-${new Date().toLocaleTimeString()}_${new Date().toLocaleDateString()}.sql`;
+          // Create blob from sqlQuery
           const blob = new Blob([sqlQuery]);
-          saveAs(
-            blob,
-            `${values.requestor}-${
-              values.org
-            }-${table}-${new Date().toLocaleTimeString()}_${new Date().toLocaleDateString()}.sql`
-          );
+          // Save the file locally for now
+          saveAs(blob, fileName);
         }}
       >
         {({ values, handleChange }) => (
