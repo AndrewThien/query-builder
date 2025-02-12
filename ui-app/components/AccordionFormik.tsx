@@ -127,6 +127,7 @@ export default function AccordionFormik({
                         name={`reason`}
                         onChange={handleChange}
                         placeholder="Reason for requesting this"
+                        required
                       />
                     </div>
                   </div>
