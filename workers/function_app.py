@@ -1,9 +1,6 @@
 import azure.functions as func
 import logging
-from sqlalchemy import (
-    select,
-    MetaData,
-)
+from sqlalchemy import select, MetaData
 from sqlalchemy.sql import and_
 from sqlalchemy.sql.expression import ClauseElement
 from sqlalchemy.sql.schema import Table, Column
@@ -127,7 +124,7 @@ def generate_sql_new(table_name: str, conditions: list):
 
     # Create a "mock" table schema
     table_schema = Table(table_name, metadata, *column_definitions.values())
-
+    # queries_list = []
     try:
         # Build conditions using SQLAlchemy
         conditions = building_conditions(table=table_schema, conditions=conditions)
@@ -144,8 +141,18 @@ def generate_sql_new(table_name: str, conditions: list):
         compiled_query_str = str(compiled_query)
         if not compiled_query_str.strip():
             raise ValueError(f"Empty query generated for table {table_name}")
-        # TO works with Airflow, the return value need to be like beneath!?
-        # return f'["""{compiled_query_str}"""]'
+            # TO works with Airflow, the return value need to be like beneath!?
+            # return f'["""{compiled_query_str}"""]'
+        # queries_list.append(f"""{compiled_query_str}""")
+        # # Create and validate headers query
+        # headers_query: ClauseElement = (
+        #     select(text("column_name"))
+        #     .select_from(text("information_schema.columns"))
+        #     .where(text(f"table_name = '{table_name}'"))
+        # )
+        # compiled_headers = headers_query.compile(dialect=mssql.dialect())
+        # queries_list.append(f"""{str(compiled_headers)}""")
+        # return f'["""{compiled_query_str}""", """{str(compiled_headers)}"""]'
         return compiled_query_str
 
     except Exception as e:
