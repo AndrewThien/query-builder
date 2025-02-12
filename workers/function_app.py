@@ -30,12 +30,11 @@ def cast_value(column: Column, value: Any):
     """Helper function to cast values based on column type"""
     # Get the type in Python of the column in the DB
     python_type = column.type.python_type
-    print("python_type: ", python_type.__name__)
     # Checking mismatch
-    if not isinstance(value, python_type):
-        logging.warning(
-            f"There is a type mismatch between column type declared in DB (column: {column.name} - type: {python_type.__name__}) and value type (value: {value} - type: {type(value).__name__}) in JSON config. Trying to cast the value..."
-        )
+    # if not isinstance(value, python_type):
+    #     logging.warning(
+    #         f"There is a type mismatch between column type declared in DB (column: {column.name} - type: {python_type.__name__}) and value type (value: {value} - type: {type(value).__name__}) in JSON config. Trying to cast the value..."
+    #     )
     try:
         if python_type is str:
             return str(value)
@@ -50,7 +49,7 @@ def cast_value(column: Column, value: Any):
         elif python_type is datetime.date:
             return datetime(value)
         # TODO: do we need to handle datetime ("%Y-%m-%d %H:%M:%S") cast as well?
-        logging.info("Casting successfully!")
+        # logging.info("Casting successfully!")
         return value
     except Exception as e:
         logging.error(f"Error casting value for column {column.name}: {e}")
