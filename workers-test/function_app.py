@@ -16,7 +16,6 @@ def generate_sql_new(table_name: str, conditions: list):
     """Generate SQL query using SQLAlchemy"""
     # Create SQLAlchemy engine for metadata reflection
     # metadata = MetaData()
-    # TODO: Need refactoring
     column_definitions = {}
     for condition in conditions:
         column_name = condition["column_name"]
