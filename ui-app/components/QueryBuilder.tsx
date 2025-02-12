@@ -6,7 +6,8 @@ import { generateSQLQuery } from "@/lib/utils";
 import { Input } from "./ui/input";
 import { Mandatory } from "./Mandatory";
 import { Settings } from "lucide-react";
-import { ToastContainer, toast } from "react-toastify";
+import toast from "react-hot-toast";
+import { Textarea } from "./ui/textarea";
 
 export interface Condition {
   column_name: string;
@@ -38,6 +39,7 @@ export default function GenerateQuery({
           requestor: "",
           org: "",
           general_reason: "",
+          comment: "",
         }}
         onSubmit={async (values) => {
           const response = await fetch("/api/generate_SQL", {
@@ -49,30 +51,10 @@ export default function GenerateQuery({
           });
 
           if (!response.ok) {
-            toast("Failed to generate SQL query", {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: false,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-              type: "error",
-            });
+            toast.error("Failed to generate SQL query");
             return;
           }
-          toast("Generate SQL query successful!", {
-            position: "top-right",
-            autoClose: 4000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            type: "success",
-          });
+          toast.success("Generate SQL query successful!");
           const sqlQuery = await response.json();
           // Form the file name form cleaned form values + datetime value
           const fileName = `${values.requestor.replace(
@@ -119,6 +101,17 @@ export default function GenerateQuery({
               <Input
                 name="general_reason"
                 placeholder="General reason for requesting this data"
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="flex gap-2 items-center mb-1">
+              <label className="font-bold flex">
+                Comment <Mandatory />
+              </label>
+              <Textarea
+                name="comment"
+                placeholder="General comment"
                 onChange={handleChange}
                 required
               />
