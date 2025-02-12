@@ -58,6 +58,7 @@ export default function GenerateQuery({
               draggable: true,
               progress: undefined,
               theme: "colored",
+              type: "error",
             });
             return;
           }
@@ -70,6 +71,7 @@ export default function GenerateQuery({
             draggable: true,
             progress: undefined,
             theme: "colored",
+            type: "success",
           });
           const sqlQuery = await response.json();
           // Form the file name form cleaned form values + datetime value

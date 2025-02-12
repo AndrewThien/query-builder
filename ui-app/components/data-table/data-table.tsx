@@ -18,8 +18,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { DataTablePagination } from "./table-pagination";
