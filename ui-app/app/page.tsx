@@ -6,7 +6,7 @@ const Page: React.FC = () => {
     <div className="container mx-auto my-5">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-xl font-extrabold text-blue-500 flex items-center">
-          Query Buider <Blocks className="ml-2" />
+          Query Builder <Blocks className="ml-2" />
         </h1>
       </div>
       <TableView />
