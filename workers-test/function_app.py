@@ -1,19 +1,28 @@
 import azure.functions as func
-
+import logging
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
 
 
 @app.route(route="http_trigger")
 def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
-    # Process the request
-    req_json: dict = req.get_json()
-    table_name: str = req_json.get("table", "")
-    conditions: list = req_json.get("conditions", [])
-    # Generate SQL
-    sql = f"{table_name}{conditions}"
+    logging.info("Python HTTP trigger function processed a request.")
 
-    return func.HttpResponse(
-        sql,
-        status_code=200,
-    )
+    name = req.params.get("name")
+    if not name:
+        try:
+            req_body = req.get_json()
+        except ValueError:
+            pass
+        else:
+            name = req_body.get("name")
+
+    if name:
+        return func.HttpResponse(
+            f"Hello, {name}. This HTTP triggered function executed successfully."
+        )
+    else:
+        return func.HttpResponse(
+            "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
+            status_code=200,
+        )
