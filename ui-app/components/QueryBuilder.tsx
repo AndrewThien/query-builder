@@ -124,6 +124,7 @@ export default function GenerateQuery({
               {() => (
                 <div className="flex flex-col">
                   <h1 className="font-bold mb-1">Conditions:</h1>
+                  {/* TODO: if taking all the column, render differently */}
                   {conditions.length > 0 &&
                     conditions.map((condition, index) => (
                       <div

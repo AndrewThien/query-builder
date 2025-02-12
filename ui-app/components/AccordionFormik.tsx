@@ -12,6 +12,7 @@ import { Mandatory } from "@/components/Mandatory";
 import * as Yup from "yup";
 import { Tooltips } from "./Tooltips";
 import { DatePickerField } from "./DatePicker";
+import { Textarea } from "./ui/textarea";
 
 export default function AccordionFormik({
   column_name,
@@ -67,55 +68,62 @@ export default function AccordionFormik({
               <Form>
                 <div className="flex flex-col gap-2 mt-1">
                   <div className="flex flex-col gap-2">
-                    <div>
-                      <div className="flex gap-2 items-center">
-                        <label className="font-semibold flex">
-                          Operator <Mandatory />{" "}
-                          <Tooltips
-                            content="Supported operators are >,<,<=,>=,=,<>,!=,!<,!>,BETWEEN."
-                            link="https://learn.microsoft.com/en-us/sql/t-sql/language-elements/comparison-operators-transact-sql?view=sql-server-ver15"
+                    <div className="flex gap-3 items-center">
+                      <h1 className="font-semibold">Filter</h1>
+                      <div className="flex flex-col gap-2 border p-2 rounded-lg">
+                        <div className="flex gap-2 items-center">
+                          <label className="flex">
+                            Operator
+                            <Tooltips
+                              content="Supported operators are >,<,<=,>=,=,<>,!=,!<,!>,BETWEEN."
+                              link="https://learn.microsoft.com/en-us/sql/t-sql/language-elements/comparison-operators-transact-sql?view=sql-server-ver15"
+                            />
+                          </label>
+                          {/* TODO: change to Formik Select with the options depending on the data type */}
+                          <Input
+                            name={`operator`}
+                            onChange={handleChange}
+                            placeholder="Comparison Operator"
                           />
-                        </label>
-                        <Input
+                        </div>
+                        <ErrorMessage
                           name={`operator`}
-                          onChange={handleChange}
-                          placeholder="Comparison Operator"
-                          required
+                          component="div"
+                          className="text-red-500"
                         />
+
+                        {values.operator && (
+                          <div className="flex gap-2 items-center">
+                            <label className="flex">
+                              Value <Mandatory />
+                            </label>
+                            {data_type == "date" || data_type == "datetime" ? (
+                              <DatePickerField name="value" />
+                            ) : (
+                              <Input
+                                name={`value`}
+                                onChange={handleChange}
+                                placeholder="Right-side value of the filter"
+                                required
+                              />
+                            )}
+
+                            <ErrorMessage
+                              name={`value`}
+                              component="div"
+                              className="text-red-500"
+                            />
+                          </div>
+                        )}
                       </div>
-                      <ErrorMessage
-                        name={`operator`}
-                        component="div"
-                        className="text-red-500"
-                      />
-                    </div>
-
-                    <div className="flex gap-2 items-center">
-                      <label className="font-semibold flex">
-                        Value <Mandatory />
-                      </label>
-                      {data_type == "date" || data_type == "datetime" ? (
-                        <DatePickerField name="value" />
-                      ) : (
-                        <Input
-                          name={`value`}
-                          onChange={handleChange}
-                          placeholder="Right-side value of the filter"
-                          required
-                        />
-                      )}
-
-                      <ErrorMessage
-                        name={`value`}
-                        component="div"
-                        className="text-red-500"
-                      />
                     </div>
                   </div>
                   <div>
                     <div className="flex gap-2 items-center">
-                      <label className="font-semibold">Reason</label>
-                      <Input
+                      <label className="font-semibold flex">
+                        Reason <Mandatory />
+                      </label>
+                      <Textarea
                         name={`reason`}
                         onChange={handleChange}
                         placeholder="Reason for requesting this"
@@ -124,8 +132,9 @@ export default function AccordionFormik({
                   </div>
                   <div className="flex justify-center">
                     <Button variant={"outline"} type="submit">
-                      Push <Plus className="size-4" />
+                      Add to Query <Plus className="size-4" />{" "}
                     </Button>
+                    <Tooltips content="If Filter is empty, all data in the column will be selected." />
                   </div>
                 </div>
               </Form>
