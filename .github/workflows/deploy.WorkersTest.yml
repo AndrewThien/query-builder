@@ -34,6 +34,11 @@ jobs:
         run: uv sync --all-extras --dev
         working-directory: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
 
+      - name: Install requirements
+        run: uv pip install -r ./workers-test/requirements.txt
+        env:
+          UV_SYSTEM_PYTHON: 1
+
       - name: Build package
         run: uv build ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
 
