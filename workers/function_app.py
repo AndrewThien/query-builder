@@ -123,6 +123,7 @@ def generate_sql_new(table_name: str, conditions: list):
 
     # Create a "mock" table schema
     table_schema = Table(table_name, metadata, *column_definitions.values())
+
     # queries_list = []
     try:
         # Build conditions using SQLAlchemy
