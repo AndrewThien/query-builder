@@ -153,7 +153,8 @@ def generate_sql_new(table_name: str, conditions: list):
         raise ValueError(f"Task failed due to: {e}")
 
 
-@app.route(route="sqlGeneration")
+@app.function_name(name="sqlgeneration")
+@app.route(route="sqlgeneration")
 def sqlGeneration(req: func.HttpRequest) -> func.HttpResponse:
     # Process the request
     req_json: dict = req.get_json()
