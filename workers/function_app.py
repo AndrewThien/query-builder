@@ -95,11 +95,7 @@ def building_conditions(table: Table, conditions: List[Dict[str, Any]]) -> List[
     return built_conditions
 
 
-def generate_sql_new(table_name: str, conditions: list):
-    """Generate SQL query using SQLAlchemy"""
-    # Create SQLAlchemy engine for metadata reflection
-    metadata = MetaData()
-    # TODO: Need refactoring
+def convert_columns(conditions):
     column_definitions = {}
     for condition in conditions:
         column_name = condition["column_name"]
@@ -120,21 +116,45 @@ def generate_sql_new(table_name: str, conditions: list):
             column_definitions[column_name] = Column(column_name, VARBINARY)
         elif data_type == "boolean":
             column_definitions[column_name] = Column(column_name, BOOLEAN)
+    return column_definitions
+
+
+def generate_sql_new(table_name: str, conditions: list):
+    """Generate SQL query using SQLAlchemy"""
+    # Create SQLAlchemy engine for metadata reflection
+    metadata = MetaData()
+    # TODO: Need refactoring
+    column_definitions = convert_columns(conditions=conditions)
 
     # Create a "mock" table schema
     table_schema = Table(table_name, metadata, *column_definitions.values())
 
     # queries_list = []
     try:
-        # Build conditions using SQLAlchemy
-        conditions = building_conditions(table=table_schema, conditions=conditions)
+        # TODO: improve naming
+        selected_columns = [
+            col for col in conditions if not col["operator"] or not col["value"]
+        ]
+
+        selected = convert_columns(selected_columns)
+
+        valid_conditions = [
+            col for col in conditions if col["operator"] and col["value"]
+        ]
+
+        built_conditions = building_conditions(
+            table=table_schema, conditions=valid_conditions
+        )
 
         # Create and validate select query
         # TODO: Distinct function only works when selecting specific columns, not records, need confirming
         query: ClauseElement = (
-            select("*").select_from(table_schema).where(and_(*conditions)).distinct()
+            select(*selected.values())
+            .select_from(table_schema)
+            .where(and_(*built_conditions))
+            .distinct()
         )
-        # Compile the query with proper value binding
+
         compiled_query = query.compile(
             dialect=mssql.dialect(), compile_kwargs={"literal_binds": True}
         )
@@ -160,7 +180,6 @@ def generate_sql_new(table_name: str, conditions: list):
         raise ValueError(f"Task failed due to: {e}")
 
 
-@app.function_name(name="sqlgeneration")
 @app.route(route="sqlgeneration")
 def sqlGeneration(req: func.HttpRequest) -> func.HttpResponse:
     # Process the request
