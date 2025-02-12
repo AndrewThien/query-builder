@@ -6,6 +6,7 @@ import { generateSQLQuery } from "@/lib/utils";
 import { Input } from "./ui/input";
 import { Mandatory } from "./Mandatory";
 import { Settings } from "lucide-react";
+import { ToastContainer, toast } from "react-toastify";
 
 export interface Condition {
   column_name: string;
@@ -48,10 +49,28 @@ export default function GenerateQuery({
           });
 
           if (!response.ok) {
-            console.error("Failed to generate SQL query");
+            toast("Failed to generate SQL query", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
             return;
           }
-
+          toast("Generate SQL query successful!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
           const sqlQuery = await response.json();
           // Form the file name form cleaned form values + datetime value
           const fileName = `${values.requestor.replace(
