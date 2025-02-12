@@ -63,7 +63,7 @@ export default function GenerateQuery({
           }
           toast("Generate SQL query successful!", {
             position: "top-right",
-            autoClose: 5000,
+            autoClose: 4000,
             hideProgressBar: false,
             closeOnClick: false,
             pauseOnHover: true,

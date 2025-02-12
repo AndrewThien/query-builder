@@ -28,7 +28,7 @@ jobs:
 
       - name: npm install and build
         run: |
-          npm i --workspaces=false
+          npm i
         working-directory: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
       # Caching node modules should be done better
@@ -41,7 +41,7 @@ jobs:
           key: nextjs | $(Agent.OS) | ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/package-lock.json
 
       - name: Build
-        run: npm run build --workspaces=false
+        run: npm run build
         working-directory: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
       - name: Copy Static Assets
