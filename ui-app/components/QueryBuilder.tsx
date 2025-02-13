@@ -8,6 +8,7 @@ import { Mandatory } from "./Mandatory";
 import { Settings } from "lucide-react";
 import toast from "react-hot-toast";
 import { Textarea } from "./ui/textarea";
+import Invoice from "./demo";
 
 export interface Condition {
   column_name: string;
@@ -185,6 +186,7 @@ export default function GenerateQuery({
           </Form>
         )}
       </Formik>
+      {/* <Invoice /> */}
     </div>
   );
 }
