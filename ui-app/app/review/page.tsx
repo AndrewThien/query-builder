@@ -1,8 +1,7 @@
 import { Blocks } from "lucide-react";
 import TableView from "@/components/TableView";
-import Invoice2 from "@/components/PDF-generation/demo";
-import Invoice from "@/components/PDF-generation/demo";
 import Link from "next/link";
+import Review from "@/components/PDF-generation/Review";
 
 const Page: React.FC = () => {
   return (
@@ -14,7 +13,7 @@ const Page: React.FC = () => {
           </h1>
         </Link>
       </div>
-      <Invoice />
+      <Review />
     </div>
   );
 };

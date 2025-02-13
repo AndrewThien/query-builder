@@ -1,79 +1,64 @@
-import {
-  Page,
-  Text,
-  View,
-  Document,
-  PDFViewer,
-  PDFDownloadLink,
-} from "@react-pdf/renderer";
-import { styles } from "./style";
-import { tableData, totalData } from "./data";
+import { ReviewData } from "@/types";
 
-export const InvoicePDF = () => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      <View style={styles.header}>
-        <View>
-          <Text style={[styles.title, styles.textBold]}>INVOICE</Text>
-          <Text>Invoice #INV-2024-001</Text>
-        </View>
-        <View style={styles.spaceY}>
-          <Text style={styles.textBold}>Company Name</Text>
-          <Text>123 Business Street</Text>
-          <Text>City, State 12345</Text>
-        </View>
-      </View>
+export const PDFTemplate = ({
+  printRef,
+  reviewData,
+}: {
+  printRef: React.MutableRefObject<null>;
+  reviewData: ReviewData;
+}) => (
+  <div ref={printRef} className="p-8 bg-white border border-gray-200">
+    <div className="flex justify-between items-center mb-8">
+      <div>
+        <h1 className="text-3xl font-bold text-gray-800">Data Request</h1>
+        <p className="text-sm text-gray-600">
+          {new Date().toLocaleTimeString()} {new Date().toLocaleDateString()}
+        </p>
+      </div>
+      <div className="text-right">
+        <h2 className="font-semibold">From:</h2>
+        <p className="text-sm text-gray-600">
+          {reviewData.requestor}
+          <br />
+          {reviewData.org}
+        </p>
+      </div>
+    </div>
 
-      <View style={styles.spaceY}>
-        <Text style={[styles.billTo, styles.textBold]}>Bill To:</Text>
-        <Text>Client Name</Text>
-        <Text>Client Address</Text>
-        <Text>City, State ZIP</Text>
-      </View>
+    <div className="mb-8">
+      <h3 className="text-lg font-semibold">General information</h3>
+      <p className="text-gray-700">
+        Reason: {reviewData.general_reason}
+        <br />
+        Comment: {reviewData.comment}
+        <br />
+        Table: {reviewData.table}
+      </p>
+    </div>
 
-      {/* Render the table */}
-      {/* <Table style={styles.table}>
-        <TH style={[styles.tableHeader, styles.textBold]}>
-          <TD style={styles.td}>Description</TD>
-          <TD style={styles.td}>Quantity</TD>
-          <TD style={styles.td}>Unit Price</TD>
-          <TD style={styles.td}>Total</TD>
-        </TH>
-        {tableData.map((item, index) => (
-          <TR key={index}>
-            <TD style={styles.td}>{item.description}</TD>
-            <TD style={styles.td}>{item.quantity}</TD>
-            <TD style={styles.td}>${item.unitPrice.toFixed(2)}</TD>
-            <TD style={styles.td}>${item.total.toFixed(2)}</TD>
-          </TR>
+    <table className="w-full mb-8 border-collapse">
+      <thead>
+        <tr className="bg-gray-100">
+          <th className="border p-2 text-left">Column</th>
+          <th className="border p-2 text-center">Data Type</th>
+          <th className="border p-2 text-center">Oper.</th>
+          <th className="border p-2 text-center">Value</th>
+          <th className="border p-2 text-center">Reason</th>
+        </tr>
+      </thead>
+      <tbody>
+        {reviewData.conditions.map((condition, index) => (
+          <tr key={index}>
+            <td className="border p-2 text-left">{condition.column_name}</td>
+            <td className="border p-2 text-center">
+              {condition.data_type.toUpperCase()}
+            </td>
+            <td className="border p-2 text-center">{condition.operator}</td>
+            <td className="border p-2 text-center">{condition.value}</td>
+            <td className="border p-2 text-center">{condition.reason}</td>
+          </tr>
         ))}
-      </Table> */}
-
-      <View style={styles.totals}>
-        <View
-          style={{
-            minWidth: "256px",
-          }}
-        >
-          {totalData.map((item, index) => (
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginBottom: "8px",
-              }}
-              key={index}
-            >
-              <Text style={item.label === "Total" ? styles.textBold : {}}>
-                {item.label}
-              </Text>
-              <Text style={item.label === "Total" ? styles.textBold : {}}>
-                {item.value}
-              </Text>
-            </View>
-          ))}
-        </View>
-      </View>
-    </Page>
-  </Document>
+      </tbody>
+    </table>
+  </div>
 );
