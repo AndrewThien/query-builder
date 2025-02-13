@@ -2,7 +2,7 @@ import React from "react";
 import { Formik, Form, FieldArray } from "formik";
 import { Button } from "./ui/button";
 import { saveAs } from "file-saver";
-import { generateSQLQuery } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { Input } from "./ui/input";
 import { Mandatory } from "./Mandatory";
 import { Settings } from "lucide-react";
@@ -71,6 +71,7 @@ export default function GenerateQuery({
         }}
       >
         {({ values, handleChange }) => (
+          // TODO: Make the widths of form fields nicer
           <Form>
             <div className="flex gap-2 items-center mb-1">
               <label className="font-bold flex">
@@ -116,7 +117,7 @@ export default function GenerateQuery({
                 required
               />
             </div>
-            <div className="flex gap-2 items-center mb-1">
+            <div className="flex gap-2 items-center mt-4 mb-1">
               <label className="font-bold">Table:</label>
               {table}
             </div>
@@ -124,7 +125,6 @@ export default function GenerateQuery({
               {() => (
                 <div className="flex flex-col">
                   <h1 className="font-bold mb-1">Conditions:</h1>
-                  {/* TODO: if taking all the column, render differently */}
                   {conditions.length > 0 &&
                     conditions.map((condition, index) => (
                       <div
@@ -133,18 +133,29 @@ export default function GenerateQuery({
                       >
                         <div className="flex flex-col gap-1 w-full">
                           <div className="flex gap-3  justify-center">
-                            <div className="flex flex-col gap-2 items-center">
-                              <label className="font-bold">Column</label>
+                            <div
+                              className={cn(
+                                "flex gap-2 items-center",
+                                condition.value && "flex-col"
+                              )}
+                            >
+                              <label className="font-bold flex">
+                                Column {!condition.value && ":"}{" "}
+                              </label>
                               {condition.column_name}
                             </div>
-                            <div className="flex flex-col gap-2 items-center">
-                              <label className="font-bold">Operator</label>
-                              {condition.operator}
-                            </div>
-                            <div className="flex flex-col gap-2 items-center">
-                              <label className="font-bold">Value</label>
-                              {condition.value}
-                            </div>
+                            {condition.operator && (
+                              <div className="flex flex-col gap-2 items-center">
+                                <label className="font-bold">Operator</label>
+                                {condition.operator}
+                              </div>
+                            )}
+                            {condition.value && (
+                              <div className="flex flex-col gap-2 items-center">
+                                <label className="font-bold">Value</label>
+                                {condition.value}
+                              </div>
+                            )}
                           </div>
                           <div className="flex gap-2 justify-start">
                             <label className="font-bold">Reason:</label>
