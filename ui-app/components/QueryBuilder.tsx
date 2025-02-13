@@ -8,7 +8,7 @@ import { Mandatory } from "./Mandatory";
 import { Settings } from "lucide-react";
 import toast from "react-hot-toast";
 import { Textarea } from "./ui/textarea";
-import Invoice from "./demo";
+import Invoice2 from "./PDF-generation/demo";
 
 export interface Condition {
   column_name: string;
@@ -186,7 +186,8 @@ export default function GenerateQuery({
           </Form>
         )}
       </Formik>
-      {/* <Invoice /> */}
+      {/* <GeneratePDF /> */}
+      <Invoice2 />
     </div>
   );
 }
