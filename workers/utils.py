@@ -1,24 +1,27 @@
-import logging
+from sqlalchemy.sql.schema import Table, Column
+from sqlalchemy.sql.sqltypes import (
+    INTEGER,
+    NVARCHAR,
+    BOOLEAN,
+    VARBINARY,
+    DATE,
+    DATETIME,
+    FLOAT,
+)
 from datetime import datetime
 from sqlalchemy import (
     cast,
     String,
     between,
 )
-from sqlalchemy.sql.schema import Column, Table
 from typing import Any, Dict, List
+import logging
 
 
 def cast_value(column: Column, value: Any):
     """Helper function to cast values based on column type"""
     # Get the type in Python of the column in the DB
     python_type = column.type.python_type
-    print("python_type: ", python_type.__name__)
-    # Checking mismatch
-    if not isinstance(value, python_type):
-        logging.warning(
-            f"There is a type mismatch between column type declared in DB (column: {column.name} - type: {python_type.__name__}) and value type (value: {value} - type: {type(value).__name__}) in JSON config. Trying to cast the value..."
-        )
     try:
         if python_type is str:
             return str(value)
@@ -33,7 +36,7 @@ def cast_value(column: Column, value: Any):
         elif python_type is datetime.date:
             return datetime(value)
         # TODO: do we need to handle datetime ("%Y-%m-%d %H:%M:%S") cast as well?
-        logging.info("Casting successfully!")
+        # logging.info("Casting successfully!")
         return value
     except Exception as e:
         logging.error(f"Error casting value for column {column.name}: {e}")
@@ -79,23 +82,25 @@ def building_conditions(table: Table, conditions: List[Dict[str, Any]]) -> List[
     return built_conditions
 
 
-def process_headers(raw_headers):
-    """Process the tables' headers pulled from XCom"""
-    try:
-        headers_list = []
-        for i, headers in enumerate(raw_headers):
-            flat_headers = [row[0] for row in headers]
-            headers_list.append(flat_headers)
+def convert_columns(conditions):
+    column_definitions = {}
+    for condition in conditions:
+        column_name = condition["column_name"]
+        data_type = condition["data_type"]
 
-        return headers_list
-
-    except Exception as e:
-        logging.error(f"Error processing table headers: {e}")
-        raise ValueError(f"Task failed due to: {e}")
-
-
-def save_sql(file_name: str, query):
-    path = f"/opt/airflow/dags/sql/{file_name}"
-    with open(path, "w") as f:
-        f.write(str(query))
-    logging.info(f"SQL query saved to {path}")
+        # Map the data type
+        if data_type == "int":
+            column_definitions[column_name] = Column(column_name, INTEGER)
+        elif data_type == "date":
+            column_definitions[column_name] = Column(column_name, DATE)
+        elif data_type == "datetime":
+            column_definitions[column_name] = Column(column_name, DATETIME)
+        elif data_type == "float":
+            column_definitions[column_name] = Column(column_name, FLOAT)
+        elif data_type == "nvarchar":
+            column_definitions[column_name] = Column(column_name, NVARCHAR)
+        elif data_type == "varbinary":
+            column_definitions[column_name] = Column(column_name, VARBINARY)
+        elif data_type == "boolean":
+            column_definitions[column_name] = Column(column_name, BOOLEAN)
+    return column_definitions
