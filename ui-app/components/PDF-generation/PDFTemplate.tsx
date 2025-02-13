@@ -7,7 +7,6 @@ import {
   PDFDownloadLink,
 } from "@react-pdf/renderer";
 import { styles } from "./style";
-import { Table, TD, TH, TR } from "@ag-media/react-pdf-table";
 import { tableData, totalData } from "./data";
 
 export const InvoicePDF = () => (
@@ -33,7 +32,7 @@ export const InvoicePDF = () => (
       </View>
 
       {/* Render the table */}
-      <Table style={styles.table}>
+      {/* <Table style={styles.table}>
         <TH style={[styles.tableHeader, styles.textBold]}>
           <TD style={styles.td}>Description</TD>
           <TD style={styles.td}>Quantity</TD>
@@ -48,7 +47,7 @@ export const InvoicePDF = () => (
             <TD style={styles.td}>${item.total.toFixed(2)}</TD>
           </TR>
         ))}
-      </Table>
+      </Table> */}
 
       <View style={styles.totals}>
         <View

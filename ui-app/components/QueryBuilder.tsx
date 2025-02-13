@@ -8,15 +8,9 @@ import { Mandatory } from "./Mandatory";
 import { Settings } from "lucide-react";
 import toast from "react-hot-toast";
 import { Textarea } from "./ui/textarea";
-import Invoice2 from "./PDF-generation/demo";
-
-export interface Condition {
-  column_name: string;
-  operator: string;
-  value: string;
-  reason: string;
-  data_type: string;
-}
+import { Condition } from "@/types";
+import { useGlobalState } from "@/lib/GlobalStateContext";
+import { useRouter } from "next/navigation";
 
 interface GenerateQueryProps {
   table: string;
@@ -29,6 +23,8 @@ export default function GenerateQuery({
   conditions,
   onRemoveCondition,
 }: GenerateQueryProps) {
+  const { setReviewData } = useGlobalState();
+  const router = useRouter();
   return (
     <div className="w-1/2">
       <h1 className="mb-2 flex justify-center font-bold text-lg">
@@ -57,18 +53,23 @@ export default function GenerateQuery({
           }
           toast.success("Generate SQL query successful!");
           const sqlQuery = await response.json();
-          // Form the file name form cleaned form values + datetime value
-          const fileName = `${values.requestor.replace(
-            /[^a-zA-Z0-9]/g,
-            "_"
-          )}-${values.org.replace(
-            /[^a-zA-Z0-9]/g,
-            "_"
-          )}-${table}-${new Date().toLocaleTimeString()}_${new Date().toLocaleDateString()}.sql`;
-          // Create blob from sqlQuery
-          const blob = new Blob([sqlQuery]);
-          // Save the file locally for now
-          saveAs(blob, fileName);
+          if (sqlQuery == "") {
+            toast.error(
+              "SQL query is empty. Please check your Proposed Query."
+            );
+            return;
+          } else {
+            setReviewData({
+              conditions,
+              requestor: values.requestor,
+              org: values.org,
+              general_reason: values.general_reason,
+              comment: values.comment,
+              table: table,
+              sql_query: sqlQuery,
+            });
+            router.push("/review");
+          }
         }}
       >
         {({ values, handleChange }) => (
@@ -187,7 +188,7 @@ export default function GenerateQuery({
         )}
       </Formik>
       {/* <GeneratePDF /> */}
-      <Invoice2 />
+      {/* <Invoice2 /> */}
     </div>
   );
 }

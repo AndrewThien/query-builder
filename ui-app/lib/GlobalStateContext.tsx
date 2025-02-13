@@ -1,10 +1,10 @@
 "use client";
 import React, { createContext, useContext, useState } from "react";
-import { TableMetaData } from "@/types/table";
+import { ReviewData } from "@/types";
 
 interface GlobalStateContextType {
-  csvData: TableMetaData[];
-  setCsvData: (data: TableMetaData[]) => void;
+  reviewData: ReviewData;
+  setReviewData: (data: ReviewData) => void;
 }
 
 const GlobalStateContext = createContext<GlobalStateContextType | undefined>(
@@ -16,10 +16,10 @@ export function GlobalStateProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [csvData, setCsvData] = useState<TableMetaData[]>([]);
+  const [reviewData, setReviewData] = useState<ReviewData>({} as ReviewData);
 
   return (
-    <GlobalStateContext.Provider value={{ csvData, setCsvData }}>
+    <GlobalStateContext.Provider value={{ reviewData, setReviewData }}>
       {children}
     </GlobalStateContext.Provider>
   );
