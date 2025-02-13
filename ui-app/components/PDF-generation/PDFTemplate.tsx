@@ -47,7 +47,7 @@ export const PDFTemplate = ({
         </tr>
       </thead>
       <tbody>
-        {reviewData.conditions.map((condition, index) => (
+        {reviewData.conditions?.map((condition, index) => (
           <tr key={index}>
             <td className="border p-2 text-left">{condition.column_name}</td>
             <td className="border p-2 text-center">

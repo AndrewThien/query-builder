@@ -10,12 +10,15 @@ export default function Review() {
   const { reviewData } = useGlobalState();
   // TODO: Filter conditions of review Data first
   // Form the file name form cleaned form values + datetime value
-  const fileName = `${reviewData.requestor.replace(
-    /[^a-zA-Z0-9]/g,
-    "_"
-  )}-${reviewData.org.replace(/[^a-zA-Z0-9]/g, "_")}-${
-    reviewData.table
-  }-${new Date().toLocaleTimeString()}_${new Date().toLocaleDateString()}.sql`;
+  let fileName = "fileName";
+  if (reviewData.requestor && reviewData.org) {
+    fileName = `${reviewData.requestor.replace(
+      /[^a-zA-Z0-9]/g,
+      "_"
+    )}-${reviewData.org.replace(/[^a-zA-Z0-9]/g, "_")}-${
+      reviewData.table
+    }-${new Date().toLocaleTimeString()}_${new Date().toLocaleDateString()}.sql`;
+  }
 
   const printRef = React.useRef(null);
 
