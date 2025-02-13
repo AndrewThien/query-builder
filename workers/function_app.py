@@ -12,7 +12,7 @@ def sqlGeneration(req: func.HttpRequest) -> func.HttpResponse:
     conditions: list = req_json.get("conditions", [])
     # Generate SQL
     sql = generate_sql(table_name=table_name, conditions=conditions)
-
+    # TODO: Handle errors
     return func.HttpResponse(
         sql,
         status_code=200,

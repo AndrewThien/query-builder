@@ -1,4 +1,4 @@
-from sqlalchemy.sql.schema import Table, Column
+from sqlalchemy.sql.schema import Column
 from sqlalchemy.sql.sqltypes import (
     INTEGER,
     NVARCHAR,
@@ -36,7 +36,6 @@ def cast_value(column: Column, value: Any):
         elif python_type is datetime.date:
             return datetime(value)
         # TODO: do we need to handle datetime ("%Y-%m-%d %H:%M:%S") cast as well?
-        # logging.info("Casting successfully!")
         return value
     except Exception as e:
         logging.error(f"Error casting value for column {column.name}: {e}")
@@ -52,7 +51,9 @@ def handle_between_condition(column: Column, value: List[Any]) -> Any:
     return between(column, start_value, end_value)
 
 
-def building_conditions(table: Table, conditions: List[Dict[str, Any]]) -> List[Any]:
+def building_filters(
+    column_schema: dict, conditions: List[Dict[str, Any]]
+) -> List[Any]:
     """Build conditions using SQLAlchemy"""
     operator_map = {
         "=": lambda col, val: col == val,
@@ -64,25 +65,26 @@ def building_conditions(table: Table, conditions: List[Dict[str, Any]]) -> List[
         "like": lambda col, val: cast(col, String).like(val),
     }
 
-    built_conditions = []
+    built_filters = []
     for col in conditions:
         # Get the column as SQL structure, value and the operator for each condition
-        column: Column = getattr(table.c, col["column_name"])
+        column: Column = column_schema[col["column_name"]]
         operator = col["operator"].strip().lower()
         value = col["value"]
 
         if operator == "between":
-            built_conditions.append(handle_between_condition(column, value))
+            built_filters.append(handle_between_condition(column, value))
         elif operator in operator_map:
             casted_value = cast_value(column, value)
-            built_conditions.append(operator_map[operator](column, casted_value))
+            built_filters.append(operator_map[operator](column, casted_value))
         else:
             raise ValueError(f"Unsupported operator: {operator}")
 
-    return built_conditions
+    return built_filters
 
 
-def convert_columns(conditions):
+def forming_columns_schema(conditions: list[dict]):
+    """Convert text columns to columns defined in SQLAlchemy based on the list of passed conditions"""
     column_definitions = {}
     for condition in conditions:
         column_name = condition["column_name"]

@@ -1,47 +1,31 @@
 import logging
-from sqlalchemy import select, MetaData
+from sqlalchemy import select, text
 from sqlalchemy.sql import and_
 from sqlalchemy.sql.expression import ClauseElement
-from sqlalchemy.sql.schema import Table
 from sqlalchemy.dialects import mssql
-from utils import convert_columns, building_conditions
+from utils import forming_columns_schema, building_filters
 
 
 def generate_sql(table_name: str, conditions: list):
     """Generate SQL query using SQLAlchemy"""
-    # Create SQLAlchemy engine for metadata reflection
-    metadata = MetaData()
-    # TODO: Need refactoring
-    column_definitions = convert_columns(conditions=conditions)
-
-    # Create a "mock" table schema
-    table_schema = Table(table_name, metadata, *column_definitions.values())
-
+    # TODO: Confirm if Airflow works without table schema
+    column_schema = forming_columns_schema(conditions=conditions)
+    columns_with_filter = [
+        col for col in conditions if col["operator"] and col["value"]
+    ]
     try:
-        # TODO: improve naming
-        selected_columns = [
-            col for col in conditions if not col["operator"] or not col["value"]
-        ]
-
-        selected = convert_columns(selected_columns)
-
-        valid_conditions = [
-            col for col in conditions if col["operator"] and col["value"]
-        ]
-
-        built_conditions = building_conditions(
-            table=table_schema, conditions=valid_conditions
+        # Build filters based on columns with filters
+        filters = building_filters(
+            column_schema=column_schema, conditions=columns_with_filter
         )
-
-        # Create and validate select query
-        # TODO: Distinct function only works when selecting specific columns, not records, need confirming
+        # Create query clause
         query: ClauseElement = (
-            select(*selected.values())
-            .select_from(table_schema)
-            .where(and_(*built_conditions))
+            select(*column_schema.values())
+            .select_from(text(f"[{table_name}]"))
+            .where(and_(*filters))
             .distinct()
         )
-
+        #  Compile, convert and validate it
         compiled_query = query.compile(
             dialect=mssql.dialect(), compile_kwargs={"literal_binds": True}
         )
