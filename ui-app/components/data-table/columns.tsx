@@ -1,6 +1,6 @@
 "use client";
 
-import { Columns } from "@/types/table";
+import { Columns } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import AccordionFormik from "../AccordionFormik";
 

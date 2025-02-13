@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { db } from "@/lib/db";
 import { tableMetadata } from "@/lib/db/schema";
-import { TableMetaData } from "@/types/table";
+import { TableMetaData } from "@/types";
 import { NextResponse } from "next/server";
 import axios from "axios";
 

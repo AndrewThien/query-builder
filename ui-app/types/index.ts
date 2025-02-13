@@ -19,3 +19,21 @@ export interface Columns {
   description: string;
   table: string;
 }
+
+export interface Condition {
+  column_name: string;
+  operator: string;
+  value: string;
+  reason: string;
+  data_type: string;
+}
+
+export interface ReviewData {
+  requestor: string;
+  org: string;
+  general_reason: string;
+  comment: string;
+  table: string;
+  conditions: Condition[];
+  sql_query: string;
+}

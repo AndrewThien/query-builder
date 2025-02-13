@@ -2,14 +2,13 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { TableMetaData } from "@/types/table";
+import { TableMetaData } from "@/types";
 import { useGlobalState } from "@/lib/GlobalStateContext";
 import { useRouter } from "next/navigation";
 import { cleanColumnDescription } from "@/lib/utils";
 
 export default function CSVUploader() {
   const [file, setFile] = useState<File | null>(null);
-  const { setCsvData } = useGlobalState();
   const router = useRouter();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +42,6 @@ export default function CSVUploader() {
       if (typeof text !== "string") return;
 
       const parsedData = parseCSV(text);
-      setCsvData(parsedData);
 
       alert("File processed successfully");
       setFile(null);

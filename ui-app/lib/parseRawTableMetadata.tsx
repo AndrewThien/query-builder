@@ -1,4 +1,4 @@
-import { Columns } from "@/types/table";
+import { Columns } from "@/types";
 
 export const rawData = `
 	[PP_SOURCE_OF_REFERRAL_OP] [varchar](2) NULL,

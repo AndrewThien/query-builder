@@ -4,10 +4,10 @@ import GenerateQuery from "@/components/QueryBuilder";
 import { COSD_table, SACT_table } from "@/lib/data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltips } from "@/components/Tooltips";
-import { Condition } from "@/components/QueryBuilder";
 import { HowItWork } from "@/components/HowItWork";
 import { DataTable } from "./data-table/data-table";
 import { columns } from "./data-table/columns";
+import { Condition } from "@/types";
 
 export default function TableView() {
   const [SACT_conditions, setConditionsSACT] = useState<Condition[]>([]);

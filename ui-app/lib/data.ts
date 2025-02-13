@@ -1,4 +1,4 @@
-import { ResearchViewTable } from "@/types/table";
+import { ResearchViewTable } from "@/types";
 
 export const SACT_table: ResearchViewTable = {
   table: "ONCO_SACT_INT_RESEARCH",
