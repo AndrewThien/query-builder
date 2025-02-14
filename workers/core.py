@@ -23,7 +23,6 @@ def generate_sql(table_name: str, conditions: list):
             select(*column_schema.values())
             .select_from(text(f"[{table_name}]"))
             .where(and_(*filters))
-            .distinct()
         )
         #  Compile, convert and validate it
         compiled_query = query.compile(
