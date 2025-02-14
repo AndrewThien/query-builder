@@ -5,6 +5,8 @@ import Review from "@/components/PDF-generation/Review";
 import { useEffect, useState } from "react";
 
 const Page: React.FC = () => {
+  // useState and UseEffect are here to make sure the page will render in Client page before
+  // the Review component rendered. Otherwise, there will be error from the Review component when building.
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     setLoaded(true);
