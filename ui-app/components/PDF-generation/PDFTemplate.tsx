@@ -1,64 +1,70 @@
+"use client";
+import React from "react";
+import {
+  Page,
+  Text,
+  View,
+  Document,
+} from "@react-pdf/renderer/lib/react-pdf.browser";
+import { styles } from "@/lib/style";
+import { Table, TD, TH, TR } from "@ag-media/react-pdf-table";
 import { ReviewData } from "@/types";
 
-export const PDFTemplate = ({
-  printRef,
-  reviewData,
-}: {
-  printRef: React.MutableRefObject<null>;
-  reviewData: ReviewData;
-}) => (
-  <div ref={printRef} className="p-8 bg-white border border-gray-200">
-    <div className="flex justify-between items-center mb-8">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-800">Data Request</h1>
-        <p className="text-sm text-gray-600">
-          {new Date().toLocaleTimeString()} {new Date().toLocaleDateString()}
-        </p>
-      </div>
-      <div className="text-right">
-        <h2 className="font-semibold">From:</h2>
-        <p className="text-sm text-gray-600">
-          {reviewData.requestor}
-          <br />
-          {reviewData.org}
-        </p>
-      </div>
-    </div>
+// Create Document Component
+export const PDFTemplate = ({ reviewData }: { reviewData: ReviewData }) => (
+  <Document>
+    <Page size="A4" style={styles.page}>
+      <View style={styles.header}>
+        <View>
+          <Text style={[styles.title, styles.textBold]}>Data Request</Text>
+          <Text>
+            {new Date().toLocaleTimeString()} {new Date().toLocaleDateString()}
+          </Text>
+        </View>
+        <View style={styles.spaceY}>
+          <Text style={styles.textBold}>Requestor</Text>
+          <Text>{reviewData.requestor}</Text>
+          <Text>{reviewData.org}</Text>
+        </View>
+      </View>
 
-    <div className="mb-8">
-      <h3 className="text-lg font-semibold">General information</h3>
-      <p className="text-gray-700">
-        Reason: {reviewData.general_reason}
-        <br />
-        Comment: {reviewData.comment}
-        <br />
-        Table: {reviewData.table}
-      </p>
-    </div>
+      <View style={styles.spaceY}>
+        <Text style={[styles.general, styles.textBold]}>
+          General Information
+        </Text>
+        <Text>Reason: {reviewData.general_reason}</Text>
+        <Text>Comment: {reviewData.comment}</Text>
+      </View>
 
-    <table className="w-full mb-8 border-collapse">
-      <thead>
-        <tr className="bg-gray-100">
-          <th className="border p-2 text-left">Column</th>
-          <th className="border p-2 text-center">Data Type</th>
-          <th className="border p-2 text-center">Oper.</th>
-          <th className="border p-2 text-center">Value</th>
-          <th className="border p-2 text-center">Reason</th>
-        </tr>
-      </thead>
-      <tbody>
+      <View style={styles.tableTitle}>
+        <Text>Table: {reviewData.table}</Text>
+      </View>
+
+      {/* Render the table */}
+      <Table style={styles.table}>
+        <TH style={[styles.tableHeader, styles.textBold]}>
+          <TD style={styles.column_name}>Column Name</TD>
+          <TD style={styles.td}>Data Type</TD>
+          <TD style={styles.td}>Filter</TD>
+        </TH>
         {reviewData.conditions?.map((condition, index) => (
-          <tr key={index}>
-            <td className="border p-2 text-left">{condition.column_name}</td>
-            <td className="border p-2 text-center">
-              {condition.data_type.toUpperCase()}
-            </td>
-            <td className="border p-2 text-center">{condition.operator}</td>
-            <td className="border p-2 text-center">{condition.value}</td>
-            <td className="border p-2 text-center">{condition.reason}</td>
-          </tr>
+          <React.Fragment key={index}>
+            <TR>
+              <TD style={styles.td}>{condition.column_name}</TD>
+              <TD style={styles.td}>{condition.data_type.toUpperCase()}</TD>
+              <TD style={styles.td}>
+                {condition.operator ? condition.operator : "*"}{" "}
+                {condition.value ? condition.value : ""}
+              </TD>
+            </TR>
+            <TR>
+              <TD style={styles.reason}>
+                Reason for requesting the above data: {condition.reason}
+              </TD>
+            </TR>
+          </React.Fragment>
         ))}
-      </tbody>
-    </table>
-  </div>
+      </Table>
+    </Page>
+  </Document>
 );

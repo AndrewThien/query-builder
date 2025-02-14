@@ -1,12 +1,11 @@
 "use client";
 import { useGlobalState } from "@/lib/GlobalStateContext";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 import React from "react";
-import { PDFTemplate } from "./PDFTemplate";
 import { saveAs } from "file-saver";
 import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
-import { MyDocument } from "./ReactPDF";
+import { Button } from "../ui/button";
+import { PDFTemplate } from "./PDFTemplate";
+import { Database, Download, File } from "lucide-react";
 
 export default function Review() {
   const { reviewData } = useGlobalState();
@@ -19,38 +18,35 @@ export default function Review() {
       "_"
     )}-${reviewData.org.replace(/[^a-zA-Z0-9]/g, "_")}-${
       reviewData.table
-    }-${new Date().toLocaleTimeString()}_${new Date().toLocaleDateString()}.sql`;
+    }-${new Date().toLocaleTimeString()}_${new Date().toLocaleDateString()}`;
   }
-
-  const printRef = React.useRef(null);
 
   const handleDownloadSQL = async () => {
     // Create blob from sqlQuery
     const blob = new Blob([reviewData.sql_query]);
     // Save the file locally for now
-    saveAs(blob, fileName);
+    saveAs(blob, `${fileName}.sql`);
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8 flex flex-col items-center">
-      <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-2xl h-[500px]">
-        {/* <PDFTemplate printRef={printRef} reviewData={reviewData} /> */}
+    <div className="max-w-2xl mx-auto mt-5 mb-10">
+      <div className="mb-4 flex gap-5 justify-center">
+        <Button onClick={handleDownloadSQL} className="flex gap-2 text-lg">
+          Download SQL query <Database />
+        </Button>
+        <PDFDownloadLink
+          document={<PDFTemplate reviewData={reviewData} />}
+          fileName={`${fileName}.pdf`}
+        >
+          <Button className="flex gap-2 text-lg">
+            Download PDF <File />
+          </Button>
+        </PDFDownloadLink>
+      </div>
+      <div className="w-full h-[700px]">
         <PDFViewer width="100%" height="100%">
-          <MyDocument />
+          <PDFTemplate reviewData={reviewData} />
         </PDFViewer>
-        <div className="mt-6 flex gap-5 justify-center">
-          <PDFDownloadLink document={<MyDocument />} fileName="invoice.pdf">
-            <button className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300">
-              Download PDF
-            </button>
-          </PDFDownloadLink>
-          <button
-            onClick={handleDownloadSQL}
-            className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300"
-          >
-            Download SQL query
-          </button>
-        </div>
       </div>
     </div>
   );
