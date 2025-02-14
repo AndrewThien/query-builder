@@ -37,3 +37,8 @@ export interface ReviewData {
   conditions: Condition[];
   sql_query: string;
 }
+
+export interface Option {
+  value: number;
+  label: string | undefined;
+}

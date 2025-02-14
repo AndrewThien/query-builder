@@ -13,6 +13,8 @@ import * as Yup from "yup";
 import { Tooltips } from "./Tooltips";
 import { DatePickerField } from "./DatePicker";
 import { Textarea } from "./ui/textarea";
+import { FormikSelect } from "./FormikSelect";
+import Operators from "@/lib/operators";
 
 export default function AccordionFormik({
   column_name,
@@ -34,15 +36,15 @@ export default function AccordionFormik({
 }) {
   const validationSchema = Yup.object().shape({
     operator: Yup.string().oneOf(
-      [">", "<", "<=", ">=", "=", "<>", "!=", "!<", "!>", "BETWEEN"],
-      `Supported operators are >,<,<=,>=,=,<>,!=,!<,!>,BETWEEN.`
+      [">", "<", "<=", ">=", "=", "<>", "!=", "!<", "!>", "BETWEEN", "LIKE"],
+      `Supported operators are >,<,<=,>=,=,<>,!=,!<,!>,BETWEEN,LIKE.`
     ),
   });
   return (
     <Accordion type="single" collapsible>
       <AccordionItem value="item-1">
         <AccordionTrigger>{column_name}</AccordionTrigger>
-        <AccordionContent className="w-[250px]">
+        <AccordionContent className="w-[250px] h-[450px]">
           <Formik
             initialValues={{
               column_name: column_name,
@@ -56,6 +58,7 @@ export default function AccordionFormik({
               addCondition(
                 values.column_name,
                 values.operator,
+                // TODO: add % in the end of value if operator = LIKE
                 values.value,
                 values.reason,
                 values.table,
@@ -91,10 +94,16 @@ export default function AccordionFormik({
                       <div className="flex gap-2 items-center">
                         <label className="flex">Operator</label>
                         {/* TODO: change to Formik Select with the options depending on the data type */}
-                        <Input
+                        {/* <Input
                           name={`operator`}
                           onChange={handleChange}
                           placeholder="Comparison Operator"
+                        /> */}
+                        <FormikSelect
+                          options={Operators({ data_type })}
+                          name="operator"
+                          isMulti={false}
+                          required={false}
                         />
                       </div>
                       <ErrorMessage
