@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, FieldArray } from "formik";
 import { Button } from "./ui/button";
 import { saveAs } from "file-saver";
@@ -24,6 +24,7 @@ export default function GenerateQuery({
   onRemoveCondition,
 }: GenerateQueryProps) {
   const { setReviewData } = useGlobalState();
+  const [processing, setProcessing] = useState(false);
   const router = useRouter();
   return (
     <div className="w-1/2">
@@ -39,6 +40,7 @@ export default function GenerateQuery({
           comment: "",
         }}
         onSubmit={async (values) => {
+          setProcessing(true);
           const response = await fetch("/api/generate_SQL", {
             method: "POST",
             headers: {
@@ -49,16 +51,18 @@ export default function GenerateQuery({
 
           if (!response.ok) {
             toast.error("Failed to generate SQL query");
+            setProcessing(false);
             return;
           }
-          toast.success("Generate SQL query successful!");
           const sqlQuery = await response.json();
+          setProcessing(false);
           if (sqlQuery == "") {
             toast.error(
               "SQL query is empty. Please check your Proposed Query."
             );
             return;
           } else {
+            toast.success("Generate SQL query successful!");
             setReviewData({
               conditions,
               requestor: values.requestor,
@@ -180,9 +184,19 @@ export default function GenerateQuery({
               )}
             </FieldArray>
             <div className="flex justify-center">
-              <Button className="mt-3 text-md items-center" type="submit">
-                Generate Query <Settings />
-              </Button>
+              {processing ? (
+                <Button
+                  className="mt-3 text-md items-center"
+                  disabled
+                  variant={"ghost"}
+                >
+                  Processing the Query...
+                </Button>
+              ) : (
+                <Button className="mt-3 text-md items-center" type="submit">
+                  Generate Query <Settings />
+                </Button>
+              )}
             </div>
           </Form>
         )}
