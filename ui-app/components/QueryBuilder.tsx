@@ -101,7 +101,7 @@ export default function GenerateQuery({
               <label className="font-bold flex">
                 Reason <Mandatory />
               </label>
-              <Input
+              <Textarea
                 name="general_reason"
                 placeholder="General reason for requesting this data"
                 onChange={handleChange}
