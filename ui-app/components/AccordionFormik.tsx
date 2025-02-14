@@ -44,7 +44,7 @@ export default function AccordionFormik({
     <Accordion type="single" collapsible>
       <AccordionItem value="item-1">
         <AccordionTrigger>{column_name}</AccordionTrigger>
-        <AccordionContent className="w-[250px] h-[450px]">
+        <AccordionContent className="w-[250px]">
           <Formik
             initialValues={{
               column_name: column_name,
@@ -93,12 +93,6 @@ export default function AccordionFormik({
                     <div className="flex flex-col gap-2 border p-2 rounded-md">
                       <div className="flex gap-2 items-center">
                         <label className="flex">Operator</label>
-                        {/* TODO: change to Formik Select with the options depending on the data type */}
-                        {/* <Input
-                          name={`operator`}
-                          onChange={handleChange}
-                          placeholder="Comparison Operator"
-                        /> */}
                         <FormikSelect
                           options={Operators({ data_type })}
                           name="operator"

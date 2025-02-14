@@ -1,7 +1,6 @@
 import { Field, FieldInputProps, FieldProps, FormikProps } from "formik";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import config from "@/tailwind.config";
 import { Option } from "@/types";
 
 const CustomSelect = ({
@@ -49,20 +48,10 @@ const CustomSelect = ({
       classNamePrefix="my-react-select"
       components={animatedComponents}
       menuPlacement="auto"
-      // styles={{
-      //   multiValueLabel: (base) => ({
-      //     ...base,
-      //     fontSize: "17px",
-      //   }),
-      //   multiValueRemove: (base) => ({
-      //     ...base,
-      //     fontSize: "17px",
-      //   }),
-      //   singleValue: (base) => ({
-      //     ...base,
-      //     fontSize: "17px",
-      //   }),
-      // }}
+      menuPortalTarget={document.body} // Render the dropdown in the body
+      styles={{
+        menuPortal: (base) => ({ ...base, zIndex: 10 }), // Ensure the dropdown is on top
+      }}
       required={required}
     />
   );
