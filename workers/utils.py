@@ -58,11 +58,13 @@ def building_filters(
     operator_map = {
         "=": lambda col, val: col == val,
         "!=": lambda col, val: col != val,
+        "<>": lambda col, val: col != val,
         ">": lambda col, val: col > val,
         "<": lambda col, val: col < val,
         ">=": lambda col, val: col >= val,
         "<=": lambda col, val: col <= val,
         "like": lambda col, val: cast(col, String).like(val),
+        # TODO: Think more about casting the varbinary type here
     }
 
     built_filters = []
