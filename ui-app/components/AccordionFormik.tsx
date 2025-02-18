@@ -45,7 +45,7 @@ export default function AccordionFormik({
     <Accordion type="single" collapsible>
       <AccordionItem value="item-1">
         <AccordionTrigger>{column_name}</AccordionTrigger>
-        <AccordionContent className="w-[250px]">
+        <AccordionContent className="w-[300px]">
           <Formik
             initialValues={{
               column_name: column_name,

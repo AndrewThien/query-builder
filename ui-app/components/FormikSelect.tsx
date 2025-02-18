@@ -44,7 +44,8 @@ const CustomSelect = ({
       placeholder={placeholder}
       options={options}
       isMulti={isMulti}
-      className="my-react-select-container"
+      // TODO: make the style of react select be consistent with ShadCN and tailwind themes
+      className="my-react-select-container w-[150px]"
       classNamePrefix="my-react-select"
       components={animatedComponents}
       menuPlacement="auto"
