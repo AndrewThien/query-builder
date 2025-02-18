@@ -11,7 +11,6 @@ import { Plus } from "lucide-react";
 import { Mandatory } from "@/components/Mandatory";
 import * as Yup from "yup";
 import { Tooltips } from "./Tooltips";
-import { DatePickerField } from "./DatePicker";
 import { Textarea } from "./ui/textarea";
 import { FormikSelect } from "./FormikSelect";
 import Operators from "@/lib/operators";
@@ -39,8 +38,8 @@ export default function AccordionFormik({
   // TODO: When LIKE is supported, find logic to add % in the end of value if operator = LIKE
   const validationSchema = Yup.object().shape({
     operator: Yup.string().oneOf(
-      [">", "<", "<=", ">=", "=", "<>", "BETWEEN"],
-      `Supported operators are >,<,<=,>=,=,<>,BETWEEN.`
+      [">", "<", "<=", ">=", "=", "<>", "BETWEEN", "CONTAINS"],
+      `Supported operators are >,<,<=,>=,=,<>,BETWEEN, CONTAINS.`
     ),
   });
   return (
@@ -60,15 +59,18 @@ export default function AccordionFormik({
               end: "",
             }}
             onSubmit={async (values) => {
-              // Pre-process for BETWEEN situation
+              // Check and Pre-process for BETWEEN situation
               let value = values.value;
-              if (values.operator == "BETWEEN" && values.start < values.end) {
-                value = `["${values.start}", "${values.end}"]`;
-              } else {
+              if (values.operator == "BETWEEN" && values.start >= values.end) {
                 toast.error(
                   "Start value cannot be equal or greater than End value!"
                 );
                 return;
+              }
+              if (values.operator == "BETWEEN") {
+                value = `["${values.start}", "${values.end}"]`;
+              } else {
+                value = values.value.toString();
               }
               // Actual action
               addCondition(
@@ -126,16 +128,6 @@ export default function AccordionFormik({
                           <label className="flex">
                             Value <Mandatory />
                           </label>
-                          {/* {data_type == "date" || data_type == "datetime" ? (
-                            <DatePickerField name="value" />
-                          ) : (
-                            <Input
-                              name={`value`}
-                              onChange={handleChange}
-                              placeholder="Right-side value of the filter"
-                              required
-                            />
-                          )} */}
                           {values.operator == "BETWEEN" ? (
                             <div
                               className={cn(
