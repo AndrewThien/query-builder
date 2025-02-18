@@ -173,8 +173,9 @@ export default function GenerateQuery({
                           <Button
                             type="button"
                             size={"sm"}
-                            variant={"destructive"}
+                            variant={"ghost"}
                             onClick={() => onRemoveCondition(index, table)}
+                            className="text-red-500"
                           >
                             X
                           </Button>
