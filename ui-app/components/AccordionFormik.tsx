@@ -34,10 +34,11 @@ export default function AccordionFormik({
     data_type: string
   ) => void;
 }) {
+  // TODO: When LIKE is supported, find logic to add % in the end of value if operator = LIKE
   const validationSchema = Yup.object().shape({
     operator: Yup.string().oneOf(
-      [">", "<", "<=", ">=", "=", "<>", "!=", "!<", "!>", "BETWEEN", "LIKE"],
-      `Supported operators are >,<,<=,>=,=,<>,!=,!<,!>,BETWEEN,LIKE.`
+      [">", "<", "<=", ">=", "=", "<>", "BETWEEN"],
+      `Supported operators are >,<,<=,>=,=,<>,BETWEEN.`
     ),
   });
   return (
@@ -58,7 +59,6 @@ export default function AccordionFormik({
               addCondition(
                 values.column_name,
                 values.operator,
-                // TODO: add % in the end of value if operator = LIKE
                 values.value,
                 values.reason,
                 values.table,

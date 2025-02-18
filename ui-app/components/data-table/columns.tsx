@@ -42,12 +42,13 @@ export const columns = (
     accessorKey: "max_length",
     header: "Max Length",
   },
-  {
-    accessorKey: "description",
-    header: "Description",
-  },
-  {
-    accessorKey: "primary",
-    header: "Primary",
-  },
+  // TODO: Confirm if these info needed when building data request?
+  // {
+  //   accessorKey: "description",
+  //   header: "Description",
+  // },
+  // {
+  //   accessorKey: "primary",
+  //   header: "Primary",
+  // },
 ];

@@ -10,8 +10,6 @@ from sqlalchemy.sql.sqltypes import (
 )
 from datetime import datetime
 from sqlalchemy import (
-    cast,
-    String,
     between,
 )
 from typing import Any, Dict, List
@@ -57,13 +55,13 @@ def building_filters(
     """Build conditions using SQLAlchemy"""
     operator_map = {
         "=": lambda col, val: col == val,
-        "!=": lambda col, val: col != val,
         "<>": lambda col, val: col != val,
         ">": lambda col, val: col > val,
         "<": lambda col, val: col < val,
         ">=": lambda col, val: col >= val,
         "<=": lambda col, val: col <= val,
-        "like": lambda col, val: cast(col, String).like(val),
+        # TODO: Not support "LIKE" for now. Will implement later
+        # "like": lambda col, val: cast(col, String).like(val),
         # TODO: Think more about casting the varbinary type here
     }
 
