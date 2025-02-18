@@ -10,7 +10,7 @@ import { Database, Download, File } from "lucide-react";
 export default function Review() {
   const { reviewData } = useGlobalState();
   // TODO: Filter conditions of review Data first
-  // Form the file name form cleaned form values + datetime value
+  // Form the file name from cleaned form values + datetime
   let fileName = "fileName";
   if (reviewData.requestor && reviewData.org) {
     fileName = `${reviewData.requestor.replace(
