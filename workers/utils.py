@@ -14,6 +14,7 @@ from sqlalchemy import (
 )
 from typing import Any, Dict, List
 import logging
+import json
 
 
 def cast_value(column: Column, value: Any):
@@ -40,12 +41,15 @@ def cast_value(column: Column, value: Any):
         raise ValueError(f"Error casting value for column {column.name}: {e}")
 
 
-def handle_between_condition(column: Column, value: List[Any]) -> Any:
+def handle_between_condition(column: Column, value: str) -> Any:
     """Handle BETWEEN condition"""
-    if not isinstance(value, list) or len(value) != 2:
+    # convert the str to list
+    value_list = json.loads(value)
+    # checking and casting
+    if not isinstance(value_list, list) or len(value_list) != 2:
         raise ValueError("BETWEEN operator requires a list of [start, end] values")
-    start_value = cast_value(column, value[0])
-    end_value = cast_value(column, value[1])
+    start_value = cast_value(column, value_list[0])
+    end_value = cast_value(column, value_list[1])
     return between(column, start_value, end_value)
 
 

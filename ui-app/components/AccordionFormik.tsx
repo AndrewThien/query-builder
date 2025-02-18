@@ -15,6 +15,8 @@ import { DatePickerField } from "./DatePicker";
 import { Textarea } from "./ui/textarea";
 import { FormikSelect } from "./FormikSelect";
 import Operators from "@/lib/operators";
+import { cn } from "@/lib/utils";
+import toast from "react-hot-toast";
 
 export default function AccordionFormik({
   column_name,
@@ -45,7 +47,7 @@ export default function AccordionFormik({
     <Accordion type="single" collapsible>
       <AccordionItem value="item-1">
         <AccordionTrigger>{column_name}</AccordionTrigger>
-        <AccordionContent className="w-[300px]">
+        <AccordionContent className="w-[320px]">
           <Formik
             initialValues={{
               column_name: column_name,
@@ -54,12 +56,25 @@ export default function AccordionFormik({
               reason: "",
               table: table,
               data_type: data_type,
+              start: "",
+              end: "",
             }}
             onSubmit={async (values) => {
+              // Pre-process for BETWEEN situation
+              let value = values.value;
+              if (values.operator == "BETWEEN" && values.start < values.end) {
+                value = `["${values.start}", "${values.end}"]`;
+              } else {
+                toast.error(
+                  "Start value cannot be equal or greater than End value!"
+                );
+                return;
+              }
+              // Actual action
               addCondition(
                 values.column_name,
                 values.operator,
-                values.value,
+                value,
                 values.reason,
                 values.table,
                 values.data_type
@@ -111,7 +126,7 @@ export default function AccordionFormik({
                           <label className="flex">
                             Value <Mandatory />
                           </label>
-                          {data_type == "date" || data_type == "datetime" ? (
+                          {/* {data_type == "date" || data_type == "datetime" ? (
                             <DatePickerField name="value" />
                           ) : (
                             <Input
@@ -119,6 +134,54 @@ export default function AccordionFormik({
                               onChange={handleChange}
                               placeholder="Right-side value of the filter"
                               required
+                            />
+                          )} */}
+                          {values.operator == "BETWEEN" ? (
+                            <div
+                              className={cn(
+                                "flex gap-1",
+                                data_type == "int" || data_type == "float"
+                                  ? ""
+                                  : "flex-col"
+                              )}
+                            >
+                              <Input
+                                name={`start`}
+                                onChange={handleChange}
+                                placeholder="Start val."
+                                required
+                                type={
+                                  data_type == "int" || data_type == "float"
+                                    ? "number"
+                                    : "date"
+                                }
+                              />
+                              <Input
+                                name={`end`}
+                                onChange={handleChange}
+                                placeholder="End val."
+                                required
+                                type={
+                                  data_type == "int" || data_type == "float"
+                                    ? "number"
+                                    : "date"
+                                }
+                              />
+                            </div>
+                          ) : (
+                            <Input
+                              name={`value`}
+                              onChange={handleChange}
+                              placeholder="Right-side value of the filter"
+                              required
+                              type={
+                                data_type == "int" || data_type == "float"
+                                  ? "number"
+                                  : data_type == "date" ||
+                                    data_type == "datetime"
+                                  ? "date"
+                                  : "text"
+                              }
                             />
                           )}
 

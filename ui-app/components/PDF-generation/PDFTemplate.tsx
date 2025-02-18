@@ -53,8 +53,8 @@ export const PDFTemplate = ({ reviewData }: { reviewData: ReviewData }) => (
               <TD style={styles.td}>{condition.column_name}</TD>
               <TD style={styles.td}>{condition.data_type.toUpperCase()}</TD>
               <TD style={styles.td}>
-                {condition.operator ? condition.operator : "*"}{" "}
-                {condition.value ? condition.value : ""}
+                {condition.operator ? condition.operator.toLowerCase() : "*"}{" "}
+                {condition.value ? condition.value.replace(/["]/g, "") : ""}
               </TD>
             </TR>
             <TR>

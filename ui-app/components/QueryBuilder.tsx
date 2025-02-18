@@ -159,7 +159,7 @@ export default function GenerateQuery({
                             {condition.value && (
                               <div className="flex flex-col gap-2 items-center">
                                 <label className="font-bold">Value</label>
-                                {condition.value}
+                                {condition.value.replace(/["]/g, "")}
                               </div>
                             )}
                           </div>
