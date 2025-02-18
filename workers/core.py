@@ -35,4 +35,4 @@ def generate_sql(table_name: str, conditions: list):
 
     except Exception as e:
         logging.error(f"Error generating SQL query: {e}")
-        raise ValueError(f"Task failed due to: {e}")
+        raise ValueError(f"Reason: {e}")

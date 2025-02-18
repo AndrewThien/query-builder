@@ -50,7 +50,8 @@ export default function GenerateQuery({
           });
 
           if (!response.ok) {
-            toast.error("Failed to generate SQL query");
+            const errorMessage = await response.json();
+            toast.error(`Generate SQL query failed. ${errorMessage.error}`);
             setProcessing(false);
             return;
           }

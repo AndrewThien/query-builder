@@ -1,8 +1,4 @@
-import { NextRequest } from "next/server";
-import { db } from "@/lib/db";
-import { tableMetadata } from "@/lib/db/schema";
-import { TableMetaData } from "@/types";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 
 export async function POST(req: NextRequest) {
@@ -12,15 +8,13 @@ export async function POST(req: NextRequest) {
     const response = await axios.post(
       process.env.WORKERS_URL
         ? `${process.env.WORKERS_URL}?code=${process.env.WORKERS_KEY}`
-        : "http://localhost:7071/api/sqlGeneration",
+        : "http://localhost:7071/api/sqlgeneration",
       data
     );
     return NextResponse.json(response.data);
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return NextResponse.json(
-      { error: "Error processing request" },
-      { status: 500 }
-    );
+    const errorMessage = error.response?.data || "Error processing request";
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
