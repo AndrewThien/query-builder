@@ -13,11 +13,12 @@ def sqlGeneration(req: func.HttpRequest) -> func.HttpResponse:
     try:
         # Generate SQL
         sql = generate_sql(table_name=table_name, conditions=conditions)
-        # TODO: Handle errors
+
         return func.HttpResponse(
             sql,
             status_code=200,
         )
+
     except Exception as e:
         return func.HttpResponse(
             str(e),

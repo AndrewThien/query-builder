@@ -13,7 +13,6 @@ export async function POST(req: NextRequest) {
     );
     return NextResponse.json(response.data);
   } catch (error: any) {
-    console.error(error);
     const errorMessage = error.response?.data || "Error processing request";
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
