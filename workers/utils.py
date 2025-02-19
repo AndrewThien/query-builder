@@ -9,9 +9,7 @@ from sqlalchemy.sql.sqltypes import (
     FLOAT,
 )
 from datetime import datetime
-from sqlalchemy import (
-    between,
-)
+from sqlalchemy import between, or_
 from typing import Any, Dict, List
 import logging
 import json
@@ -33,7 +31,7 @@ def cast_value(column: Column, value: Any):
         elif python_type is bytes:
             return bytes(value, "utf-8")
         elif python_type is datetime.date:
-            return datetime(value)
+            return datetime.strptime(value, "%Y-%m-%d")
         # TODO: do we need to handle datetime ("%Y-%m-%d %H:%M:%S") cast as well?
         return value
     except Exception as e:
@@ -51,6 +49,20 @@ def handle_between_condition(column: Column, value: str) -> Any:
     start_value = cast_value(column, value_list[0])
     end_value = cast_value(column, value_list[1])
     return between(column, start_value, end_value)
+
+
+def handle_contains_condition(column: Column, value: str) -> Any:
+    """Handle CONTAINS condition"""
+    # convert the str to list
+    value_list = json.loads(value)
+    or_conditions = []
+    # checking
+    if not isinstance(value_list, list):
+        raise ValueError("BETWEEN operator requires a list of [start, end] values")
+    for value in value_list:
+        casted_value = cast_value(column, value)
+        or_conditions.append(column == casted_value)
+    return or_(*or_conditions)
 
 
 def building_filters(
@@ -78,6 +90,8 @@ def building_filters(
 
         if operator == "between":
             built_filters.append(handle_between_condition(column, value))
+        elif operator == "contains":
+            built_filters.append(handle_contains_condition(column, value))
         elif operator in operator_map:
             casted_value = cast_value(column, value)
             built_filters.append(operator_map[operator](column, casted_value))

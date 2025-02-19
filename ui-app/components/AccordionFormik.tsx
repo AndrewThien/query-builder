@@ -59,8 +59,8 @@ export default function AccordionFormik({
               end: "",
             }}
             onSubmit={async (values) => {
+              let value;
               // Check and Pre-process for BETWEEN situation
-              let value = values.value;
               if (values.operator == "BETWEEN" && values.start >= values.end) {
                 toast.error(
                   "Start value cannot be equal or greater than End value!"
@@ -71,6 +71,16 @@ export default function AccordionFormik({
                 value = `["${values.start}", "${values.end}"]`;
               } else {
                 value = values.value.toString();
+              }
+
+              // Check and Pre-process for CONTAINS situation
+              if (values.operator == "CONTAINS") {
+                value = values.value
+                  .split(",") // Make a list with splitter is ","
+                  .map((item) => `"${item.trim()}"`) // Trim whitespace and format each item
+                  .join(","); // Join items into a single string
+
+                value = `[${value}]`; // Enclose the string in square brackets
               }
               // Actual action
               addCondition(
