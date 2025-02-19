@@ -107,20 +107,20 @@ def forming_columns_schema(conditions: list[dict]):
     for condition in conditions:
         column_name = condition["column_name"]
         data_type = condition["data_type"]
-
-        # Map the data type
+        # Ignoring some type check here because SQLAlchemy Column schema captured correctly the Column type,
+        # but MyPy keeps warning the mismatching, which is potentially misleading
         if data_type == "int":
             column_definitions[column_name] = Column(column_name, INTEGER)
         elif data_type == "date":
-            column_definitions[column_name] = Column(column_name, DATE)
+            column_definitions[column_name] = Column(column_name, DATE)  # type: ignore
         elif data_type == "datetime":
-            column_definitions[column_name] = Column(column_name, DATETIME)
+            column_definitions[column_name] = Column(column_name, DATETIME)  # type: ignore
         elif data_type == "float":
             column_definitions[column_name] = Column(column_name, FLOAT)
         elif data_type == "nvarchar":
-            column_definitions[column_name] = Column(column_name, NVARCHAR)
+            column_definitions[column_name] = Column(column_name, NVARCHAR)  # type: ignore
         elif data_type == "varbinary":
-            column_definitions[column_name] = Column(column_name, VARBINARY)
+            column_definitions[column_name] = Column(column_name, VARBINARY)  # type: ignore
         elif data_type == "boolean":
-            column_definitions[column_name] = Column(column_name, BOOLEAN)
+            column_definitions[column_name] = Column(column_name, BOOLEAN)  # type: ignore
     return column_definitions
