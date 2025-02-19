@@ -8,14 +8,15 @@ from sqlalchemy.sql.sqltypes import (
     DATETIME,
     FLOAT,
 )
+from sqlalchemy.sql.expression import ColumnExpressionArgument
 from datetime import datetime
 from sqlalchemy import between, or_
-from typing import Any, Dict, List
+from typing import Dict, List
 import logging
 import json
 
 
-def cast_value(column: Column, value: Any):
+def cast_value(column: Column, value: str):
     """Helper function to cast values based on column type"""
     # Get the type in Python of the column in the DB
     python_type = column.type.python_type
@@ -39,7 +40,7 @@ def cast_value(column: Column, value: Any):
         raise ValueError(f"Error casting value for column {column.name}: {e}")
 
 
-def handle_between_condition(column: Column, value: str) -> Any:
+def handle_between_condition(column: Column, value: str) -> ColumnExpressionArgument:
     """Handle BETWEEN condition"""
     # convert the str to list
     value_list = json.loads(value)
@@ -51,7 +52,7 @@ def handle_between_condition(column: Column, value: str) -> Any:
     return between(column, start_value, end_value)
 
 
-def handle_contains_condition(column: Column, value: str) -> Any:
+def handle_contains_condition(column: Column, value: str) -> ColumnExpressionArgument:
     """Handle CONTAINS condition"""
     # convert the str to list
     value_list = json.loads(value)
@@ -66,8 +67,8 @@ def handle_contains_condition(column: Column, value: str) -> Any:
 
 
 def building_filters(
-    column_schema: dict, conditions: List[Dict[str, Any]]
-) -> List[Any]:
+    column_schema: dict, conditions: List[Dict[str, str]]
+) -> List[ColumnExpressionArgument]:
     """Build conditions using SQLAlchemy"""
     operator_map = {
         "=": lambda col, val: col == val,
@@ -107,7 +108,7 @@ def forming_columns_schema(conditions: list[dict]):
     for condition in conditions:
         column_name = condition["column_name"]
         data_type = condition["data_type"]
-        # Ignoring some type check here because SQLAlchemy Column schema captured correctly the Column type,
+        # Ignoring some type checks here because SQLAlchemy Column schema captured correctly the Column type,
         # but MyPy keeps warning the mismatching, which is potentially misleading
         if data_type == "int":
             column_definitions[column_name] = Column(column_name, INTEGER)
