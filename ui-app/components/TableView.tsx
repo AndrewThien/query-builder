@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import GenerateQuery from "@/components/QueryBuilder";
+import GenerateQuery from "@/components/GenerateQuery";
 import { COSD_table, SACT_table } from "@/lib/data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltips } from "@/components/Tooltips";

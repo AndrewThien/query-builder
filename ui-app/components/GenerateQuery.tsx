@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Formik, Form, FieldArray } from "formik";
 import { Button } from "./ui/button";
-import { saveAs } from "file-saver";
 import { cn } from "@/lib/utils";
 import { Input } from "./ui/input";
 import { Mandatory } from "./Mandatory";
@@ -135,7 +134,7 @@ export default function GenerateQuery({
                   {conditions.length > 0 &&
                     conditions.map((condition, index) => (
                       <div
-                        className="flex gap-3 border rounded-xl justify-between p-3 mb-2"
+                        className="flex gap-3 border border-input rounded-xl justify-between p-3 mb-2"
                         key={index}
                       >
                         <div className="flex flex-col gap-1 w-full">
