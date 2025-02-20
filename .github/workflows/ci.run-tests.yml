@@ -1,0 +1,42 @@
+name: Run Workers Tests
+
+on:
+  pull_request:
+
+env:
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: "./workers"
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  run-tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.5.16"
+          enable-cache: true
+          cache-dependency-glob: "${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/uv.lock"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: uv sync
+        run: uv sync --frozen --dev
+        working-directory: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+
+      - name: Run tests
+        working-directory: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+        run: uv run pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=query_builder tests | tee pytest-coverage.txt
+
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@81882822c5b22af01f91bd3eacb1cefb6ad73dc2
+        with:
+          pytest-coverage-path: pytest-coverage.txt
+          junitxml-path: pytest.xml
