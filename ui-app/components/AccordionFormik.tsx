@@ -117,7 +117,7 @@ export default function AccordionFormik({
                       Filter{" "}
                       <Tooltips content="Optional. If this is empty, all data in this column will be selected" />
                     </h1>
-                    <div className="flex flex-col gap-2 border p-2 rounded-md">
+                    <div className="flex flex-col gap-2 border border-input p-2 rounded-md">
                       <div className="flex gap-2 items-center">
                         <label className="flex">Operator</label>
                         <FormikSelect

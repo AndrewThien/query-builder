@@ -1,6 +1,33 @@
 @tailwind base;
-@tailwind components;
 @tailwind utilities;
+
+@tailwind components {
+  @layer components {
+    .my-react-select-container .my-react-select__control {
+      @apply bg-background dark:bg-background rounded-md border border-input dark:border dark:border-input;
+    }
+
+    .my-react-select-container .my-react-select__control--is-focused {
+      @apply border-gray-400 dark:border-gray-400 shadow-none;
+    }
+
+    .my-react-select-container .my-react-select__control--menu-is-open {
+      @apply border-gray-400 dark:border-gray-400 shadow-none;
+    }
+
+    .my-react-select-container .my-react-select__menu {
+      @apply bg-background dark:bg-background;
+    }
+
+    .my-react-select-container .my-react-select__option {
+      @apply dark:text-white/90 text-black bg-background dark:bg-background;
+    }
+
+    .my-react-select-container .my-react-select__single-value {
+      @apply text-primary dark:text-white/90;
+    }
+  }
+}
 
 body {
   font-family: Arial, Helvetica, sans-serif;
@@ -65,14 +92,5 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
   }
 }

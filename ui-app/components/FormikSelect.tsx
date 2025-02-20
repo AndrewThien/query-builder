@@ -51,7 +51,26 @@ const CustomSelect = ({
       menuPlacement="auto"
       menuPortalTarget={document.body} // Render the dropdown in the body
       styles={{
-        menuPortal: (base) => ({ ...base, zIndex: 10 }), // Ensure the dropdown is on top
+        menuPortal: (base) => ({ ...base, zIndex: 9999 }), // Ensure the dropdown is on top
+        menu: (base) => ({
+          ...base,
+          zIndex: 10,
+          backgroundColor: "hsl(var(--background))",
+          color: "hsl(var(--foreground))",
+          border: "1px solid hsl(var(--border))",
+        }),
+        option: (base, state) => ({
+          ...base,
+          backgroundColor: state.isFocused
+            ? "hsl(var(--secondary-foreground) / 0.85)"
+            : state.isSelected
+            ? "hsl(var(--primary))"
+            : "hsl(var(--background))",
+          color:
+            state.isFocused || state.isSelected
+              ? "hsl(var(--primary-foreground))"
+              : "hsl(var(--foreground))",
+        }),
       }}
       required={required}
     />
