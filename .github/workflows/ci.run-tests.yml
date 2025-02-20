@@ -39,10 +39,9 @@ jobs:
           uv run pytest --junitxml=pytest.xml
           uv run coverage run -m pytest
           uv run coverage xml
-          uv run coverage report --skip-covered > pytest-coverage.txt
 
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@81882822c5b22af01f91bd3eacb1cefb6ad73dc2
         with:
-          pytest-coverage-path: workers/pytest-coverage.txt
+          pytest-xml-coverage-path: workers/coverage.xml
           junitxml-path: workers/pytest.xml
