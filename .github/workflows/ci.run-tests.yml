@@ -33,7 +33,7 @@ jobs:
 
       - name: Run tests
         working-directory: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-        run: uv run pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=query_builder tests | tee pytest-coverage.txt
+        run: uv run pytest test_utils.py --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=query_builder tests | tee pytest-coverage.txt
 
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@81882822c5b22af01f91bd3eacb1cefb6ad73dc2
