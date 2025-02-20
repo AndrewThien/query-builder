@@ -9,7 +9,7 @@ from sqlalchemy.sql.sqltypes import (
     FLOAT,
 )
 from sqlalchemy.sql.expression import ColumnExpressionArgument
-from datetime import datetime
+from datetime import datetime, date
 from sqlalchemy import between, or_
 from typing import Dict, List
 import logging
@@ -31,9 +31,10 @@ def cast_value(column: Column, value: str):
             return bool(value)
         elif python_type is bytes:
             return bytes(value, "utf-8")
-        elif python_type is datetime.date:
+        elif python_type is date:
+            return datetime.strptime(value, "%Y-%m-%d").date()
+        elif python_type is datetime:
             return datetime.strptime(value, "%Y-%m-%d")
-        # TODO: do we need to handle datetime ("%Y-%m-%d %H:%M:%S") cast as well?
         return value
     except Exception as e:
         logging.error(f"Error casting value for column {column.name}: {e}")
