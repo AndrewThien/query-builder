@@ -22,7 +22,8 @@ jobs:
         with:
           version: "0.5.16"
           enable-cache: true
-          cache-dependency-glob: "${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/uv.lock"
+          cache-dependency-glob: "uv.lock"
+          working-directory: workers
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -31,14 +32,17 @@ jobs:
 
       - name: uv sync
         run: uv sync --frozen --dev
-        working-directory: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+        working-directory: workers
 
       - name: Run tests
-        working-directory: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-        run: uv run pytest tests --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=./workers tests | tee pytest-coverage.txt
+        working-directory: workers
+        run: |
+          uv run pytest --junitxml=pytest.xml \
+          --cov=sources --cov-report=xml:coverage.xml \
+          --cov-report=term-missing:skip-covered
 
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@81882822c5b22af01f91bd3eacb1cefb6ad73dc2
         with:
-          pytest-coverage-path: workers/pytest-coverage.txt
+          pytest-coverage-path: workers/coverage.xml
           junitxml-path: workers/pytest.xml
