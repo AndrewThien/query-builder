@@ -80,7 +80,7 @@ export default function GenerateQuery({
           // TODO: Make the widths of form fields nicer
           <Form>
             <div className="flex gap-2 items-center mb-1">
-              <label className="font-bold flex">
+              <label className="font-bold flex w-[170px]">
                 Requestor <Mandatory />
               </label>
               <Input
@@ -91,7 +91,7 @@ export default function GenerateQuery({
               />
             </div>
             <div className="flex gap-2 items-center mb-1">
-              <label className="font-bold flex">
+              <label className="font-bold flex w-[170px]">
                 Organisation <Mandatory />
               </label>
               <Input
@@ -102,7 +102,7 @@ export default function GenerateQuery({
               />
             </div>
             <div className="flex gap-2 items-center mb-1">
-              <label className="font-bold flex">
+              <label className="font-bold flex w-[170px]">
                 Reason <Mandatory />
               </label>
               <Textarea
@@ -113,7 +113,7 @@ export default function GenerateQuery({
               />
             </div>
             <div className="flex gap-2 items-center mb-1">
-              <label className="font-bold flex">
+              <label className="font-bold flex w-[170px]">
                 Comment <Mandatory />
               </label>
               <Textarea
@@ -202,8 +202,6 @@ export default function GenerateQuery({
           </Form>
         )}
       </Formik>
-      {/* <GeneratePDF /> */}
-      {/* <Invoice2 /> */}
     </div>
   );
 }
