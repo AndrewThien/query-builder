@@ -38,5 +38,5 @@ jobs:
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@81882822c5b22af01f91bd3eacb1cefb6ad73dc2
         with:
-          pytest-coverage-path: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/pytest-coverage.txt
-          junitxml-path: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/pytest.xml
+          pytest-coverage-path: workers/pytest-coverage.txt
+          junitxml-path: workers/pytest.xml
