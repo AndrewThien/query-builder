@@ -1,9 +1,8 @@
 name: Deploy function app to Azure
 
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [released]
 
     paths:
       - "workers/**"
