@@ -38,7 +38,7 @@ jobs:
         working-directory: workers
         run: |
           uv run pytest --junitxml=pytest.xml \
-          --cov=sources --cov-report=xml:coverage.xml \
+          --cov=sources --cov-report xml:coverage.xml \
           --cov-report=term-missing:skip-covered
 
       - name: Pytest coverage comment
