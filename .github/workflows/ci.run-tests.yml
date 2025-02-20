@@ -36,14 +36,13 @@ jobs:
       - name: Run tests
         working-directory: workers
         run: |
-          uv run pytest tests/ \
-          --junitxml=pytest.xml \
-          --cov=. \
-          --cov-report=xml \
-          --cov-report=term-missing:skip-covered
+          uv run pytest --junitxml=pytest.xml
+          uv run coverage run -m pytest
+          uv run coverage xml
+          uv run coverage report --skip-covered > pytest-coverage.txt
 
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@81882822c5b22af01f91bd3eacb1cefb6ad73dc2
         with:
-          pytest-coverage-path: workers/coverage.xml
+          pytest-coverage-path: workers/pytest-coverage.txt
           junitxml-path: workers/pytest.xml
