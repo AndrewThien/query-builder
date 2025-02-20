@@ -22,8 +22,7 @@ jobs:
         with:
           version: "0.5.16"
           enable-cache: true
-          cache-dependency-glob: "uv.lock"
-          working-directory: workers
+          cache-dependency-glob: "workers/uv.lock"
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -38,7 +37,7 @@ jobs:
         working-directory: workers
         run: |
           uv run pytest --junitxml=pytest.xml \
-          --cov=sources --cov-report xml:coverage.xml \
+          --cov-report xml:coverage.xml \
           --cov-report=term-missing:skip-covered
 
       - name: Pytest coverage comment
