@@ -4,9 +4,6 @@ on:
   release:
     types: [released]
 
-    paths:
-      - "workers/**"
-
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: "./workers"
   PYTHON_VERSION: "3.11"
