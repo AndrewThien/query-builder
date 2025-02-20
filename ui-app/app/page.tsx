@@ -1,5 +1,6 @@
 import { Blocks } from "lucide-react";
 import TableView from "@/components/TableView";
+import { ModeToggle } from "@/components/ModeToogle";
 
 const Page: React.FC = () => {
   return (
@@ -8,6 +9,7 @@ const Page: React.FC = () => {
         <h1 className="text-2xl font-extrabold text-blue-500 flex items-center">
           Query Builder <Blocks className="ml-2" />
         </h1>
+        <ModeToggle />
       </div>
       <TableView />
     </div>

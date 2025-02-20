@@ -98,7 +98,7 @@ export default function TableView() {
               onRemoveCondition={handleRemoveCondition}
             />
           ) : (
-            <HowItWork />
+            <></>
           )}
         </div>
       </TabsContent>
@@ -115,7 +115,7 @@ export default function TableView() {
               onRemoveCondition={handleRemoveCondition}
             />
           ) : (
-            <HowItWork />
+            <></>
           )}
         </div>
       </TabsContent>
