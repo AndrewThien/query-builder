@@ -27,7 +27,7 @@ export default function GenerateQuery({
   const router = useRouter();
   return (
     <div className="w-1/2">
-      <h1 className="mb-2 flex justify-center font-bold text-lg">
+      <h1 className="mb-2 flex justify-center font-bold text-xl">
         Proposed Query
       </h1>
       <Formik
@@ -80,7 +80,7 @@ export default function GenerateQuery({
           // TODO: Make the widths of form fields nicer
           <Form>
             <div className="flex gap-2 items-center mb-1">
-              <label className="font-bold flex w-[170px]">
+              <label className="flex w-[170px]">
                 Requestor <Mandatory />
               </label>
               <Input
@@ -91,7 +91,7 @@ export default function GenerateQuery({
               />
             </div>
             <div className="flex gap-2 items-center mb-1">
-              <label className="font-bold flex w-[170px]">
+              <label className="flex w-[170px]">
                 Organisation <Mandatory />
               </label>
               <Input
@@ -102,7 +102,7 @@ export default function GenerateQuery({
               />
             </div>
             <div className="flex gap-2 items-center mb-1">
-              <label className="font-bold flex w-[170px]">
+              <label className="flex w-[170px]">
                 Reason <Mandatory />
               </label>
               <Textarea
@@ -113,7 +113,7 @@ export default function GenerateQuery({
               />
             </div>
             <div className="flex gap-2 items-center mb-1">
-              <label className="font-bold flex w-[170px]">
+              <label className="flex w-[170px]">
                 Comment <Mandatory />
               </label>
               <Textarea
@@ -124,13 +124,13 @@ export default function GenerateQuery({
               />
             </div>
             <div className="flex gap-2 items-center mt-4 mb-1">
-              <label className="font-bold">Table:</label>
-              {table}
+              <label>Table:</label>
+              <h1 className="font-bold">{table}</h1>
             </div>
             <FieldArray name="conditions">
               {() => (
                 <div className="flex flex-col">
-                  <h1 className="font-bold mb-1">Conditions:</h1>
+                  <h1 className="mb-1">Conditions:</h1>
                   {conditions.length > 0 &&
                     conditions.map((condition, index) => (
                       <div
@@ -186,12 +186,8 @@ export default function GenerateQuery({
             </FieldArray>
             <div className="flex justify-center">
               {processing ? (
-                <Button
-                  className="mt-3 text-md items-center"
-                  disabled
-                  variant={"ghost"}
-                >
-                  Processing the Query...
+                <Button className="mt-3 text-md items-center" disabled>
+                  Processing Query...
                 </Button>
               ) : (
                 <Button className="mt-3 text-md items-center" type="submit">
