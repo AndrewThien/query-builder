@@ -1,3 +1,2 @@
 [run]
-source =
-    workers
+relative_files = True
