@@ -4,7 +4,6 @@ on:
   pull_request:
 
 env:
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: "./workers"
   PYTHON_VERSION: "3.11"
 
 jobs:
@@ -43,7 +42,7 @@ jobs:
           uv run coverage xml
 
       - name: Pytest coverage comment
-        uses: MishaKav/pytest-coverage-comment@81882822c5b22af01f91bd3eacb1cefb6ad73dc2
+        uses: MishaKav/pytest-coverage-comment@main
         with:
           pytest-xml-coverage-path: workers/coverage.xml
           junitxml-path: workers/pytest.xml
