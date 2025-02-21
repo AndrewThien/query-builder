@@ -1,10 +1,3 @@
-from utils import (
-    cast_value,
-    handle_between_condition,
-    handle_contains_condition,
-    building_filters,
-    forming_columns_schema,
-)
 import pytest
 from sqlalchemy import Column
 from sqlalchemy.sql.sqltypes import (
@@ -17,6 +10,13 @@ from sqlalchemy.sql.sqltypes import (
     FLOAT,
 )
 from datetime import date, datetime
+from utils import (
+    cast_value,
+    handle_between_condition,
+    handle_contains_condition,
+    building_filters,
+    forming_columns_schema,
+)
 
 
 class TestCastValue:
