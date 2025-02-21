@@ -43,8 +43,8 @@ jobs:
           uv run coverage xml
 
       - name: Pytest coverage comment
-        uses: MishaKav/pytest-coverage-comment@v1.1.45
-        id: coverageComment
+        uses: MishaKav/pytest-coverage-comment@main
         with:
           pytest-xml-coverage-path: workers/coverage.xml
           junitxml-path: workers/pytest.xml
+          coverage-path-prefix: workers/
