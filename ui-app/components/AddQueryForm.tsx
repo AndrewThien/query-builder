@@ -10,6 +10,17 @@ import { cn } from "@/lib/utils";
 import toast from "react-hot-toast";
 import FindOperators from "./core/FindOperators";
 
+interface FormData {
+  column_name: string;
+  operator: string;
+  value: string;
+  reason: string;
+  table: string;
+  data_type: string;
+  start: string;
+  end: string;
+}
+
 export default function AddQueryForm({
   addCondition,
   column_name,
@@ -21,6 +32,53 @@ export default function AddQueryForm({
   table: string;
   data_type: string;
 }) {
+  const handleSubmit = (values: FormData) => {
+    const { operator, start, end, value: inputValue } = values;
+
+    // Helper function to handle BETWEEN operator
+    const handleBetweenOperator = () => {
+      if (start >= end) {
+        toast.error("Start value cannot be equal or greater than End value!");
+        return null;
+      }
+      return `["${start}", "${end}"]`;
+    };
+
+    // Helper function to handle CONTAINS operator
+    const handleContainsOperator = () => {
+      return `[${inputValue
+        .split(",")
+        .map((item) => `"${item.trim()}"`)
+        .join(",")}]`;
+    };
+
+    // Determine the value based on the operator
+    let value;
+    switch (operator) {
+      case "BETWEEN":
+        value = handleBetweenOperator();
+        break;
+      case "CONTAINS":
+        value = handleContainsOperator();
+        break;
+      default:
+        value = inputValue.toString();
+        break;
+    }
+
+    // If value is null, it means there was an error (e.g., invalid BETWEEN values)
+    if (value === null) return;
+
+    // Actual action
+    addCondition(
+      values.column_name,
+      values.operator,
+      value,
+      values.reason,
+      values.table,
+      values.data_type
+    );
+  };
   return (
     <Formik
       initialValues={{
@@ -35,36 +93,7 @@ export default function AddQueryForm({
       }}
       // TODO: When LIKE is supported, find logic to add % in the end of value if operator = LIKE
       onSubmit={async (values) => {
-        let value;
-        // Check and Pre-process for BETWEEN situation
-        if (values.operator == "BETWEEN" && values.start >= values.end) {
-          toast.error("Start value cannot be equal or greater than End value!");
-          return;
-        }
-        if (values.operator == "BETWEEN") {
-          value = `["${values.start}", "${values.end}"]`;
-        } else {
-          value = values.value.toString();
-        }
-
-        // Check and Pre-process for CONTAINS situation
-        if (values.operator == "CONTAINS") {
-          value = values.value
-            .split(",") // Make a list with splitter is ","
-            .map((item) => `"${item.trim()}"`) // Trim whitespace and format each item
-            .join(","); // Join items into a single string
-
-          value = `[${value}]`; // Enclose the string in square brackets
-        }
-        // Actual action
-        addCondition(
-          values.column_name,
-          values.operator,
-          value,
-          values.reason,
-          values.table,
-          values.data_type
-        );
+        handleSubmit(values);
       }}
     >
       {({ values, handleChange }) => (
@@ -109,7 +138,10 @@ export default function AddQueryForm({
                 {values.operator && (
                   <div className="flex gap-2 items-center">
                     <label className="flex">
-                      Value <Mandatory />
+                      Value <Mandatory />{" "}
+                      {values.operator == "CONTAINS" && (
+                        <Tooltips content="List of texts matching the values in the column, separated by a comma. For example: ABC, CDE, FGH" />
+                      )}
                     </label>
                     {values.operator == "BETWEEN" ? (
                       <div
