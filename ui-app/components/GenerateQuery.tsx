@@ -8,7 +8,7 @@ import { Settings } from "lucide-react";
 import toast from "react-hot-toast";
 import { Textarea } from "./ui/textarea";
 import { Condition } from "@/types";
-import { useGlobalState } from "@/lib/GlobalStateContext";
+import { useGlobalState } from "@/components/core/GlobalStateContext";
 import { useRouter } from "next/navigation";
 
 interface GenerateQueryProps {

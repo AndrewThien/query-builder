@@ -1,5 +1,5 @@
 "use client";
-import { useGlobalState } from "@/lib/GlobalStateContext";
+import { useGlobalState } from "@/components/core/GlobalStateContext";
 import React from "react";
 import { saveAs } from "file-saver";
 import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";

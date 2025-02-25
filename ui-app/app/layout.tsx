@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { GlobalStateProvider } from "@/lib/GlobalStateContext";
+import { GlobalStateProvider } from "@/components/core/GlobalStateContext";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/components/core/theme-provider";
 

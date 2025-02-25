@@ -13,9 +13,9 @@ import * as Yup from "yup";
 import { Tooltips } from "./core/Tooltips";
 import { Textarea } from "./ui/textarea";
 import { FormikSelect } from "./FormikSelect";
-import Operators from "@/lib/operators";
 import { cn } from "@/lib/utils";
 import toast from "react-hot-toast";
+import FindOperators from "./core/FindOperators";
 
 export default function AccordionFormik({
   column_name,
@@ -121,7 +121,7 @@ export default function AccordionFormik({
                       <div className="flex gap-2 items-center">
                         <label className="flex">Operator</label>
                         <FormikSelect
-                          options={Operators({ data_type })}
+                          options={FindOperators({ data_type })}
                           name="operator"
                           isMulti={false}
                           required={false}
