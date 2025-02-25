@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import GenerateQuery from "@/components/GenerateQuery";
 import { COSD_table, SACT_table } from "@/lib/data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Tooltips } from "@/components/Tooltips";
+import { Tooltips } from "@/components/core/Tooltips";
 import { DataTable } from "./data-table/data-table";
 import { columns } from "./data-table/columns";
 import { Condition } from "@/types";

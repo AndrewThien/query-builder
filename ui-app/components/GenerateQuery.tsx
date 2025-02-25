@@ -3,7 +3,7 @@ import { Formik, Form, FieldArray } from "formik";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 import { Input } from "./ui/input";
-import { Mandatory } from "./Mandatory";
+import { Mandatory } from "./core/Mandatory";
 import { Settings } from "lucide-react";
 import toast from "react-hot-toast";
 import { Textarea } from "./ui/textarea";
