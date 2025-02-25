@@ -1,3 +1,6 @@
 azure-functions
 sqlalchemy>=2.0.38
 pre-commit
+coverage>=7.6.12
+pytest>=8.3.4
+pytest-cov>=6.0.0
