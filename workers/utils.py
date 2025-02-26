@@ -66,7 +66,7 @@ def handle_contains_condition(column: Column, value: str) -> ColumnExpressionArg
     for value in value_list:
         # TODO: for VARBINARY case, this is a dangerous approach, should find a better one
         # For VARBINARY, use text() to create a raw SQL expression
-        if column.type.python_type is bytes:
+        if isinstance(column.type, VARBINARY):
             # Remove quotes for hex literals
             or_conditions.append(text(f"{column.name} = {value}"))
         else:
@@ -97,7 +97,6 @@ def building_filters(
         column: Column = column_schema[col["column_name"]]
         operator = col["operator"].strip().lower()
         value = col["value"]
-        data_type = col["data_type"]
 
         if operator == "between":
             built_filters.append(handle_between_condition(column, value))
@@ -106,7 +105,7 @@ def building_filters(
         elif operator in operator_map:
             # TODO: for VARBINARY case, this is a dangerous approach, should find a better one
             # For VARBINARY, use text() to create a raw SQL expression
-            if data_type == "varbinary":
+            if isinstance(column.type, VARBINARY):
                 # Remove quotes for hex literals
                 built_filters.append(text(f"{column.name} {operator} {value}"))
             else:
