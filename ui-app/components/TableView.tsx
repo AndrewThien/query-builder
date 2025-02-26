@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import GenerateQuery from "@/components/GenerateQuery";
+import GenerateQueryForm from "@/components/GenerateQueryForm";
 import { COSD_table, SACT_table } from "@/lib/data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltips } from "@/components/core/Tooltips";
@@ -91,7 +91,7 @@ export default function TableView() {
           />
           {/* TODO: add filter column name to search */}
           {SACT_conditions.length > 0 ? (
-            <GenerateQuery
+            <GenerateQueryForm
               table={SACT_table.table}
               conditions={SACT_conditions}
               onRemoveCondition={handleRemoveCondition}
@@ -108,7 +108,7 @@ export default function TableView() {
             data={COSD_table.columns}
           />
           {COSD_conditions.length > 0 ? (
-            <GenerateQuery
+            <GenerateQueryForm
               table={COSD_table.table}
               conditions={COSD_conditions}
               onRemoveCondition={handleRemoveCondition}
