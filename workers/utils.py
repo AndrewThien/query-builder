@@ -10,7 +10,7 @@ from sqlalchemy.sql.sqltypes import (
 )
 from sqlalchemy.sql.expression import ColumnExpressionArgument
 from datetime import datetime, date
-from sqlalchemy import between, or_
+from sqlalchemy import between, or_, text
 from typing import Dict, List
 import logging
 import json
@@ -64,8 +64,15 @@ def handle_contains_condition(column: Column, value: str) -> ColumnExpressionArg
             "CONTAINS operator requires a list with at least 2 values separated by a comma."
         )
     for value in value_list:
-        casted_value = cast_value(column, value)
-        or_conditions.append(column == casted_value)
+        # TODO: for VARBINARY case, this is a dangerous approach, should find a better one
+        # For VARBINARY, use text() to create a raw SQL expression
+        if column.type.python_type is bytes:
+            # Remove quotes for hex literals
+            or_conditions.append(text(f"{column.name} = {value}"))
+        else:
+            # If not hex, proceed with normal casting
+            casted_value = cast_value(column, value)
+            or_conditions.append(column == casted_value)
     return or_(*or_conditions)
 
 
@@ -90,14 +97,22 @@ def building_filters(
         column: Column = column_schema[col["column_name"]]
         operator = col["operator"].strip().lower()
         value = col["value"]
+        data_type = col["data_type"]
 
         if operator == "between":
             built_filters.append(handle_between_condition(column, value))
         elif operator == "contains":
             built_filters.append(handle_contains_condition(column, value))
         elif operator in operator_map:
-            casted_value = cast_value(column, value)
-            built_filters.append(operator_map[operator](column, casted_value))
+            # TODO: for VARBINARY case, this is a dangerous approach, should find a better one
+            # For VARBINARY, use text() to create a raw SQL expression
+            if data_type == "varbinary":
+                # Remove quotes for hex literals
+                built_filters.append(text(f"{column.name} {operator} {value}"))
+            else:
+                # If not hex, proceed with normal casting
+                casted_value = cast_value(column, value)
+                built_filters.append(operator_map[operator](column, casted_value))
         else:
             raise ValueError(f"Unsupported operator: {operator}")
 
