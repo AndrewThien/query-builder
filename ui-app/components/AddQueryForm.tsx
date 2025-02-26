@@ -129,12 +129,6 @@ export default function AddQueryForm({
                     required={false}
                   />
                 </div>
-                <ErrorMessage
-                  name={`operator`}
-                  component="div"
-                  className="text-red-500"
-                />
-
                 {values.operator && (
                   <div className="flex gap-2 items-center">
                     <label className="flex">
@@ -190,12 +184,6 @@ export default function AddQueryForm({
                         }
                       />
                     )}
-
-                    <ErrorMessage
-                      name={`value`}
-                      component="div"
-                      className="text-red-500"
-                    />
                   </div>
                 )}
               </div>
