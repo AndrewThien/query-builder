@@ -145,6 +145,7 @@ class TestHandleContains:
             handle_contains_condition(column, invalid_value)
 
 
+# TODO: Write test for VARBINARY cases
 class TestBuildingFilters:
     def test_building_filters(self):
         column_schema = {
@@ -153,16 +154,23 @@ class TestBuildingFilters:
             "test_date": Column("test_date", DATE),
         }
         conditions = [
-            {"column_name": "test_int", "operator": "=", "value": "123"},
+            {
+                "column_name": "test_int",
+                "operator": "=",
+                "value": "123",
+                "data_type": "int",
+            },
             {
                 "column_name": "test_str",
                 "operator": "contains",
                 "value": '["test1", "test2"]',
+                "data_type": "nvarchar",
             },
             {
                 "column_name": "test_date",
                 "operator": "between",
                 "value": '["2025-02-20", "2025-02-21"]',
+                "data_type": "date",
             },
         ]
         filters = building_filters(column_schema, conditions)
@@ -176,7 +184,12 @@ class TestBuildingFilters:
             "test_int": Column("test_int", INTEGER),
         }
         conditions = [
-            {"column_name": "test_int", "operator": "randomOperator", "value": "123"},
+            {
+                "column_name": "test_int",
+                "operator": "randomOperator",
+                "value": "123",
+                "data_type": "int",
+            },
         ]
         with pytest.raises(
             ValueError,
