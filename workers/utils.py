@@ -82,7 +82,6 @@ def building_filters(
         "<=": lambda col, val: col <= val,
         # TODO: Not support "LIKE" for now. Will implement later
         # "like": lambda col, val: cast(col, String).like(val),
-        # TODO: Think more about casting the varbinary type here
     }
 
     built_filters = []
