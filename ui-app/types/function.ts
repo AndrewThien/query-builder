@@ -8,3 +8,7 @@ interface AddConditionInterface {
     data_type: string
   ): void;
 }
+
+interface RemoveConditionInterface {
+  (index: number, table: string): void;
+}
