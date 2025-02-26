@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
-import { db } from "@/lib/db";
-import { tableMetadata } from "@/lib/db/schema";
+import { db } from "@/components/archive/db";
+import { tableMetadata } from "@/components/archive/db/schema";
 import { TableMetaData } from "@/types";
 import { NextResponse } from "next/server";
 

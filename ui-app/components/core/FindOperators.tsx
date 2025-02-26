@@ -1,4 +1,4 @@
-export default function Operators({ data_type }: { data_type: string }) {
+export default function FindOperators({ data_type }: { data_type: string }) {
   if (
     data_type == "int" ||
     data_type == "float" ||

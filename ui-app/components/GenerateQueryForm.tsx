@@ -3,21 +3,21 @@ import { Formik, Form, FieldArray } from "formik";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 import { Input } from "./ui/input";
-import { Mandatory } from "./Mandatory";
+import { Mandatory } from "./core/Mandatory";
 import { Settings } from "lucide-react";
 import toast from "react-hot-toast";
 import { Textarea } from "./ui/textarea";
 import { Condition } from "@/types";
-import { useGlobalState } from "@/lib/GlobalStateContext";
+import { useGlobalState } from "@/components/core/GlobalStateContext";
 import { useRouter } from "next/navigation";
 
 interface GenerateQueryProps {
   table: string;
   conditions: Condition[];
-  onRemoveCondition: (index: number, table: string) => void;
+  onRemoveCondition: RemoveConditionInterface;
 }
 
-export default function GenerateQuery({
+export default function GenerateQueryForm({
   table,
   conditions,
   onRemoveCondition,
@@ -39,6 +39,7 @@ export default function GenerateQuery({
           comment: "",
         }}
         onSubmit={async (values) => {
+          // POST to Next's API
           setProcessing(true);
           const response = await fetch("/api/generate_SQL", {
             method: "POST",
@@ -47,38 +48,33 @@ export default function GenerateQuery({
             },
             body: JSON.stringify({ table, conditions }),
           });
-
+          // If response is failling, unpack and show the error message on the UI
           if (!response.ok) {
             const errorMessage = await response.json();
             toast.error(`Generate SQL query failed. ${errorMessage.error}`);
             setProcessing(false);
             return;
           }
+          // Unpack the response, set the global state value, then push to the `review` page
           const sqlQuery = await response.json();
           setProcessing(false);
-          if (sqlQuery == "") {
-            toast.error(
-              "SQL query is empty. Please check your Proposed Query."
-            );
-            return;
-          } else {
-            toast.success("Generate SQL query successful!");
-            setReviewData({
-              conditions,
-              requestor: values.requestor,
-              org: values.org,
-              general_reason: values.general_reason,
-              comment: values.comment,
-              table: table,
-              sql_query: sqlQuery,
-            });
-            router.push("/review");
-          }
+          toast.success("Generate SQL query successful!");
+          setReviewData({
+            conditions,
+            requestor: values.requestor,
+            org: values.org,
+            general_reason: values.general_reason,
+            comment: values.comment,
+            table: table,
+            sql_query: sqlQuery,
+          });
+          router.push("/review");
         }}
       >
         {({ values, handleChange }) => (
           // TODO: Make the widths of form fields nicer
           <Form>
+            {/* Request information */}
             <div className="flex gap-2 items-center mb-1">
               <label className="flex w-[170px]">
                 Requestor <Mandatory />
@@ -123,6 +119,7 @@ export default function GenerateQuery({
                 required
               />
             </div>
+            {/* Filters information */}
             <div className="flex gap-2 items-center mt-4 mb-1">
               <label>Table:</label>
               <h1 className="font-bold">{table}</h1>
@@ -184,6 +181,7 @@ export default function GenerateQuery({
                 </div>
               )}
             </FieldArray>
+            {/* Submit button */}
             <div className="flex justify-center">
               {processing ? (
                 <Button className="mt-3 text-md items-center" disabled>

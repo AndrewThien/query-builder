@@ -1,6 +1,6 @@
 import { Blocks } from "lucide-react";
 import TableView from "@/components/TableView";
-import { ModeToggle } from "@/components/ModeToogle";
+import { ModeToggle } from "@/components/core/ModeToogle";
 
 const Page: React.FC = () => {
   return (

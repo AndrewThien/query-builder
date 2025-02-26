@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { TableMetaData } from "@/types";
-import { useGlobalState } from "@/lib/GlobalStateContext";
+import { useGlobalState } from "@/components/core/GlobalStateContext";
 import { useRouter } from "next/navigation";
 import { cleanColumnDescription } from "@/lib/utils";
 

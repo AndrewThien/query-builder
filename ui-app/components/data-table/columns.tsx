@@ -2,17 +2,10 @@
 
 import { Columns } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
-import AccordionFormik from "../AccordionFormik";
+import FormikAccordion from "../FormikAccordion";
 
 export const columns = (
-  addCondition: (
-    column_name: string,
-    operator: string,
-    value: string,
-    reason: string,
-    table: string,
-    data_type: string
-  ) => void
+  addCondition: AddConditionInterface
 ): ColumnDef<Columns>[] => [
   {
     header: "Column Name",
@@ -21,7 +14,7 @@ export const columns = (
       const { name, table, data_type } = row.original;
 
       return (
-        <AccordionFormik
+        <FormikAccordion
           column_name={name}
           table={table}
           addCondition={addCondition}
