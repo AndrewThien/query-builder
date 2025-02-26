@@ -39,7 +39,14 @@ export default function RootLayout({
         >
           <GlobalStateProvider>{children}</GlobalStateProvider>
         </ThemeProvider>
-        <Toaster />
+        <Toaster
+          toastOptions={{
+            style: {
+              wordBreak: "break-all",
+              maxWidth: 500,
+            },
+          }}
+        />
       </body>
     </html>
   );
